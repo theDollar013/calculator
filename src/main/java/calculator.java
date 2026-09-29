@@ -18,18 +18,17 @@ public class calculator extends Application {
 
     // Initializes display, first number, operator, and a boolean to start a new number
     private TextField disp;
-    private String op = "";
-    private double firstNumber;
     private boolean startNewNumber = true;
     private final Map<String, Button> buttons = new HashMap<>();
+    private final CalculatorLogic log = new CalculatorLogic();
 
     @Override
     public void start(Stage stage) {
 
         // Setting up display
-
         disp = new TextField("0");
         disp.setEditable(false);
+        disp.setFocusTraversable(false);
         disp.setAlignment(Pos.CENTER_RIGHT);
         disp.setId("display");
         disp.setPrefHeight(80);
@@ -103,14 +102,31 @@ public class calculator extends Application {
             if (event.getCode() == KeyCode.ENTER) {
 
                 handleInput("=");
+                pressButton("=");
                 event.consume();
             }
         });
 
-        // Adds functionality for keyboard input
+        scene.addEventFilter(KeyEvent.KEY_RELEASED, event -> {
+
+            if (event.getCode() == KeyCode.ENTER) {
+
+                Button button = buttons.get("=");
+
+                if (button != null) {
+
+                    button.getStyleClass().remove("keyboard-pressed");
+                }
+
+                event.consume();
+            }
+        });
+
+        // Adds functionality for keyboard input while giving the button a "pressed" look when pressed
         scene.setOnKeyPressed(event -> {
 
                 String key = event.getText();
+                String visKey = key;
 
                 if (key.matches("[0-9]")) {
 
@@ -133,18 +149,39 @@ public class calculator extends Application {
                 else if (event.getCode() == KeyCode.BACK_SPACE) {
 
                     handleInput("⌫");
+                    pressButton("⌫");
                 }
 
                 else if (event.getCode() == KeyCode.ESCAPE) {
 
                     handleInput("C");
+                    pressButton("C");
                 }
         });
 
+        // Removes the "pressed" look when released
         scene.setOnKeyReleased(event -> {
 
             String key = event.getText();
             Button button = buttons.get(key);
+            String visKey = key;
+
+            if (button != null) {
+
+                button.getStyleClass().remove("keyboard-pressed");
+            }
+
+            else if (event.getCode() == KeyCode.BACK_SPACE) {
+
+                visKey = "⌫";
+            }
+
+            else if (event.getCode() == KeyCode.ESCAPE) {
+
+                visKey = "C";
+            }
+
+            button = buttons.get(visKey);
 
             if (button != null) {
 
@@ -205,31 +242,23 @@ public class calculator extends Application {
         // If operator is pressed
         else if (input.matches("[+\\-*/]")) {
 
+            String op = input;
+
             // If there is already a queued operation, calculate it first
-            if (!op.isEmpty() && !startNewNumber) {
+            if (log.hasOperation() && !startNewNumber) {
 
                 double secondNumber = Double.parseDouble(disp.getText());
-
-                // Ensures there is no attempt to divide by zero
-                if (op.equals("/") && secondNumber == 0) {
-
-                    disp.setText("Unable to divide by 0");
-                    op = "";
-                    startNewNumber = true;
-                    return;
-                }
-
-                firstNumber = calculate(firstNumber, secondNumber, op);
-                disp.setText(formatResult(firstNumber));
+                double result = log.calcWith(secondNumber);
+                disp.setText(log.formatResult(result));
+                log.setOperation(result, op);
             }
 
-            else if (op.isEmpty()) {
+            else {
 
-                firstNumber = Double.parseDouble(disp.getText());
+                double currNum = Double.parseDouble(disp.getText());
+                log.setOperation(currNum, op);
             }
 
-            // Stores the selected operator
-            op = selOp;
             startNewNumber = true;
         }
 
@@ -260,7 +289,7 @@ public class calculator extends Application {
             // Prevents displaying -0
             if (currNum != 0) {
                 currNum = currNum * -1;
-                disp.setText(formatResult(currNum));
+                disp.setText(log.formatResult(currNum));
             }
         }
 
@@ -269,7 +298,7 @@ public class calculator extends Application {
 
             double num = Double.parseDouble(disp.getText());
 
-            // Checks if number is negative
+            // SqRts of neg numbers undefined
             if (num < 0) {
 
                 disp.setText("Undefined");
@@ -277,47 +306,39 @@ public class calculator extends Application {
 
             else {
 
-                double sqrt = Math.sqrt(num);
-                disp.setText(formatResult(sqrt));
+                num = log.sqrt(num);
+                disp.setText(log.formatResult(num));
             }
         }
 
         // If equals button is pressed
         else if (input.equals("=")) {
 
-            if (!op.isEmpty() && !startNewNumber) {
+            if (log.hasOperation() && !startNewNumber) {
 
                 double secondNumber = Double.parseDouble(disp.getText());
 
-                // Double protection against dividing by zero
-                if (op.equals("/") && secondNumber == 0) {
+                try {
 
-                    disp.setText("Unable to divide by 0");
-                    op = "";
-                    startNewNumber = true;
-                    return;
+                    double result = log.calcWith(secondNumber);
+                    disp.setText(log.formatResult(result));
                 }
 
-                double result = calculate(firstNumber, secondNumber, op);
-                disp.setText(formatResult(result));
+                // User attempted to divide by 0
+                catch (ArithmeticException e) {
+                    disp.setText(e.getMessage());
+                }
+
+                log.clearOperation();
+                startNewNumber = true;
             }
-
-            else if (!op.isEmpty()) {
-
-                firstNumber = Double.parseDouble(disp.getText());
-            }
-
-            // Stores the selected operator
-            op = selOp;
-            startNewNumber = true;
         }
 
         // If clear button is pressed
         else if (input.equals("C")) {
 
             disp.setText("0");
-            firstNumber = 0;
-            op = "";
+            log.clearOperation();
             startNewNumber = true;
         }
     }
@@ -330,37 +351,6 @@ public class calculator extends Application {
 
             button.getStyleClass().add("keyboard-pressed");
         }
-    }
-
-    private double calculate(double a, double b, String op) {
-
-        switch (op) {
-
-            case "+":
-                return a + b;
-
-            case "-":
-                return a - b;
-
-            case "*":
-                return a * b;
-
-            case "/":
-                return a / b;
-
-            default:
-                return b;
-        }
-    }
-
-    private String formatResult(double result) {
-
-        if (result == (long) result) {
-
-            return Long.toString((long) result);
-        }
-
-        return Double.toString(result);
     }
 
     public static void main(String[] args) {
