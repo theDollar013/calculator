@@ -6,9 +6,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import java.util.HashMap;
+import java.util.Map;
 
 public class calculator extends Application {
 
@@ -17,6 +21,7 @@ public class calculator extends Application {
     private String op = "";
     private double firstNumber;
     private boolean startNewNumber = true;
+    private final Map<String, Button> buttons = new HashMap<>();
 
     @Override
     public void start(Stage stage) {
@@ -26,16 +31,29 @@ public class calculator extends Application {
         disp = new TextField("0");
         disp.setEditable(false);
         disp.setAlignment(Pos.CENTER_RIGHT);
-        disp.setStyle("-fx-font-size: 28px;");
+        disp.setId("display");
+        disp.setPrefHeight(80);
+        disp.setMaxWidth(Double.MAX_VALUE);
 
         // Setting up grid for buttons
         GridPane grid = new GridPane();
-        grid.setHgap(8);
-        grid.setVgap(8);
+        grid.setHgap(10);
+        grid.setVgap(10);
         grid.setAlignment(Pos.CENTER);
+
+        // Allows button expansion with window expansion
+        for (int i = 0; i < 4; i++) {
+
+            ColumnConstraints column = new ColumnConstraints();
+            column.setPercentWidth(25);
+            column.setHgrow(Priority.ALWAYS);
+            grid.getColumnConstraints().add(column);
+        }
+
+        // Button grid layout
         String[][] keys = {
 
-                {"⌫", "C", "", "/"},
+                {"⌫", "C", "√", "/"},
                 {"7", "8", "9", "*"},
                 {"4", "5", "6", "-"},
                 {"1", "2", "3", "+"},
@@ -46,19 +64,38 @@ public class calculator extends Application {
 
             for (int column = 0; column < keys[row].length; column++) {
 
+                // Creates buttons, button size, styles, etc.
                 String key = keys[row][column];
                 Button button = new Button(key);
-                button.setStyle("-fx-font-size: 20px;");
+                buttons.put(key, button);
+                button.setPrefSize(75, 65);
+                button.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+
+                // Assigns operator buttons their own class in .css file
+                if (key.matches("[+\\-/*=]")) {
+
+                    button.getStyleClass().add("operator-button");
+                }
+
+                // Assigns function buttons their own class in .css file
+                if (key.equals("C") || key.equals("⌫") || key.equals("+/-") || key.equals("√")) {
+
+                    button.getStyleClass().add("function-button");
+                }
+
                 button.setOnAction(event -> handleInput(key));
                 grid.add(button, column, row);
             }
         }
 
-        VBox root = new VBox(12, disp, grid);
-        root.setPadding(new Insets(15));
+        VBox root = new VBox(15, disp, grid);
+        root.setPadding(new Insets(20));
         root.setAlignment(Pos.CENTER);
 
-        Scene scene = new Scene(root, 320, 350);
+        Scene scene = new Scene(root, 400, 500);
+
+        // Links class to .css file for gui customization
+        scene.getStylesheets().add(getClass().getResource("/calculator.css").toExternalForm());
 
         // Handles Enter key presses as "=" rather than selecting a button
         scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
@@ -78,16 +115,19 @@ public class calculator extends Application {
                 if (key.matches("[0-9]")) {
 
                     handleInput(key);
+                    pressButton(key);
                 }
 
                 else if (key.equals(".")) {
 
                     handleInput(key);
+                    pressButton(key);
                 }
 
                 else if (key.matches("[+\\-*/]")) {
 
                     handleInput(key);
+                    pressButton(key);
                 }
 
                 else if (event.getCode() == KeyCode.BACK_SPACE) {
@@ -101,9 +141,22 @@ public class calculator extends Application {
                 }
         });
 
+        scene.setOnKeyReleased(event -> {
+
+            String key = event.getText();
+            Button button = buttons.get(key);
+
+            if (button != null) {
+
+                button.getStyleClass().remove("keyboard-pressed");
+            }
+        });
+
         stage.setTitle("Calculator");
         stage.setScene(scene);
-        stage.setResizable(false);
+        stage.setResizable(true);
+        stage.setMinHeight(400);
+        stage.setMinWidth(350);
         stage.show();
     }
 
@@ -211,6 +264,24 @@ public class calculator extends Application {
             }
         }
 
+        // If square root button is pressed
+        else if (input.equals("√")) {
+
+            double num = Double.parseDouble(disp.getText());
+
+            // Checks if number is negative
+            if (num < 0) {
+
+                disp.setText("Undefined");
+            }
+
+            else {
+
+                double sqrt = Math.sqrt(num);
+                disp.setText(formatResult(sqrt));
+            }
+        }
+
         // If equals button is pressed
         else if (input.equals("=")) {
 
@@ -248,6 +319,16 @@ public class calculator extends Application {
             firstNumber = 0;
             op = "";
             startNewNumber = true;
+        }
+    }
+
+    private void pressButton(String key) {
+
+        Button button = buttons.get(key);
+
+        if (button != null) {
+
+            button.getStyleClass().add("keyboard-pressed");
         }
     }
 

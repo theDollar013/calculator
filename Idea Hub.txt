@@ -1,0 +1,5 @@
+1. Finish styling GUI
+2. Add code for scientific notation
+3. Fix buttons not adjusting size for resizing of window height
+	- button resizing works fine when adjusting width, just not height yet
+4. 
