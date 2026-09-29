@@ -1,0 +1,71 @@
+.root {
+
+    -fx-background-color: #202020;
+}
+
+#display {
+
+    -fx-font-size:30px;
+    -fix-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-padding: 10px 15px;
+    -fx-text-fill: white;
+    -fx-background-color: #303030;
+    -fx-border-color: transparent;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.button {
+
+    -fx-font-size: 20px;
+    -fx-background-color: #404040;
+    -fx-text-fill: white;
+    -fx-background-radius: 8px;
+}
+
+.button:hover {
+
+    -fx-background-color: #505050;
+}
+
+.button:pressed {
+
+    -fx-background-color: #606060;
+}
+
+.operator-button {
+
+    -fx-background-color: #ff9500;
+}
+
+.operator-button:hover {
+
+    -fx-background-color: #ffaa22;
+}
+
+.operator-button:pressed {
+
+    -fx-background-color: #cc7700;
+}
+
+.function-button: {
+
+    -fx-background-color: #707070;
+}
+
+.function-button:hover {
+
+    -fx-background-color: #808080;
+}
+
+.function-button:pressed {
+
+    -fx-background-color: #606060;
+}
+
+.keyboard-pressed {
+
+    -fx-scale-x: 0.95;
+    -fx-scale-y: 0.95;
+}
