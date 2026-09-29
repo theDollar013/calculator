@@ -4,6 +4,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -37,7 +39,7 @@ public class calculator extends Application {
                 {"7", "8", "9", "*"},
                 {"4", "5", "6", "-"},
                 {"1", "2", "3", "+"},
-                {"", "0", ".", "="}
+                {"+/-", "0", ".", "="}
         };
 
         for (int row = 0; row < keys.length; row++) {
@@ -57,6 +59,47 @@ public class calculator extends Application {
         root.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(root, 320, 350);
+
+        // Handles Enter key presses as "=" rather than selecting a button
+        scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+
+            if (event.getCode() == KeyCode.ENTER) {
+
+                handleInput("=");
+                event.consume();
+            }
+        });
+
+        // Adds functionality for keyboard input
+        scene.setOnKeyPressed(event -> {
+
+                String key = event.getText();
+
+                if (key.matches("[0-9]")) {
+
+                    handleInput(key);
+                }
+
+                else if (key.equals(".")) {
+
+                    handleInput(key);
+                }
+
+                else if (key.matches("[+\\-*/]")) {
+
+                    handleInput(key);
+                }
+
+                else if (event.getCode() == KeyCode.BACK_SPACE) {
+
+                    handleInput("⌫");
+                }
+
+                else if (event.getCode() == KeyCode.ESCAPE) {
+
+                    handleInput("C");
+                }
+        });
 
         stage.setTitle("Calculator");
         stage.setScene(scene);
@@ -153,6 +196,18 @@ public class calculator extends Application {
 
                     disp.setText("0");
                 }
+            }
+        }
+
+        // If +/- button is pushed (neg-to-pos or pos-to-neg)
+        else if (input.equals("+/-")) {
+
+            double currNum = Double.parseDouble(disp.getText());
+
+            // Prevents displaying -0
+            if (currNum != 0) {
+                currNum = currNum * -1;
+                disp.setText(formatResult(currNum));
             }
         }
 
