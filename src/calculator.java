@@ -33,11 +33,11 @@ public class calculator extends Application {
         grid.setAlignment(Pos.CENTER);
         String[][] keys = {
 
-                 {"", "C", "", "/"},
-                 {"7", "8", "9", "*"},
-                 {"4", "5", "6", "-"},
-                 {"1", "2", "3", "+"},
-                 {"", "0", ".", "="}
+                {"⌫", "C", "", "/"},
+                {"7", "8", "9", "*"},
+                {"4", "5", "6", "-"},
+                {"1", "2", "3", "+"},
+                {"", "0", ".", "="}
         };
 
         for (int row = 0; row < keys.length; row++) {
@@ -102,14 +102,12 @@ public class calculator extends Application {
             else if (!disp.getText().contains(".")) {
 
                 disp.setText(disp.getText() + ".");
+
             }
         }
 
         // If operator is pressed
         else if (input.matches("[+\\-*/]")) {
-
-
-
 
             // If there is already a queued operation, calculate it first
             if (!op.isEmpty() && !startNewNumber) {
@@ -137,6 +135,25 @@ public class calculator extends Application {
             // Stores the selected operator
             op = selOp;
             startNewNumber = true;
+        }
+
+        // If backspace button is pushed
+        else if (input.equals("⌫")) {
+
+            if (!startNewNumber) {
+
+                String currTxt = disp.getText();
+
+                if (currTxt.length() > 1) {
+
+                    disp.setText(currTxt.substring(0, currTxt.length() - 1));
+                }
+
+                else {
+
+                    disp.setText("0");
+                }
+            }
         }
 
         // If equals button is pressed
