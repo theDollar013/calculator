@@ -26,16 +26,18 @@ public class calculator extends Application {
         disp.setAlignment(Pos.CENTER_RIGHT);
         disp.setStyle("-fx-font-size: 28px;");
 
-        // Setting up grid pattern for buttons
+        // Setting up grid for buttons
         GridPane grid = new GridPane();
         grid.setHgap(8);
         grid.setVgap(8);
         grid.setAlignment(Pos.CENTER);
         String[][] keys = {
-                {"7", "8", "9", "/"},
-                {"4", "5", "6", "*"},
-                {"1", "2", "3", "-"},
-                {"C", "0", "=", "+"}
+
+                 {"", "C", "", "/"},
+                 {"7", "8", "9", "*"},
+                 {"4", "5", "6", "-"},
+                 {"1", "2", "3", "+"},
+                 {"", "0", ".", "="}
         };
 
         for (int row = 0; row < keys.length; row++) {
@@ -64,7 +66,9 @@ public class calculator extends Application {
 
     private void handleInput(String input) {
 
-        // Converts X to * for Java to recognize as multiplication
+        // This was originally meant to convert X to * for Java to recognize as multiplication
+        // X didn't look good in GUI, so reverted back to *
+        // However, this line ensures selOp is initialized for compiling
         String selOp = input.equals("X") ? "*" : input;
 
         // If any number is pressed
@@ -81,6 +85,24 @@ public class calculator extends Application {
             }
 
             startNewNumber = false;
+        }
+
+        // If . is pressed for decimal usage
+        else if (input.equals(".")) {
+
+            // If an operator has already been selected, ensures the decimal is used on the second number
+            if (startNewNumber) {
+
+                disp.setText("0.");
+                startNewNumber = false;
+            }
+
+            // Verifies that there isn't already a decimal present
+            // If there is already a decimal present, nothing happens
+            else if (!disp.getText().contains(".")) {
+
+                disp.setText(disp.getText() + ".");
+            }
         }
 
         // If operator is pressed
