@@ -50,10 +50,10 @@ public class Calculator extends Application {
             grid.getColumnConstraints().add(column);
         }
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 6; i++) {
 
             RowConstraints row = new RowConstraints();
-            row.setPercentHeight(20);
+            row.setPercentHeight(18);
             row.setVgrow(Priority.ALWAYS);
             grid.getRowConstraints().add(row);
         }
@@ -61,7 +61,8 @@ public class Calculator extends Application {
         // Button grid layout
         String[][] keys = {
 
-                {"⌫", "C", "√", "/"},
+                {"", "C", "√", "⌫"},
+                {"", "", "%", "/"},
                 {"7", "8", "9", "*"},
                 {"4", "5", "6", "-"},
                 {"1", "2", "3", "+"},
@@ -85,7 +86,8 @@ public class Calculator extends Application {
                 }
 
                 // Assigns function buttons their own class in .css file
-                if (key.equals("C") || key.equals("⌫") || key.equals("+/-") || key.equals("√")) {
+                if (key.equals("C") || key.equals("⌫")
+                        || key.equals("%") || key.equals("√")) {
 
                     button.getStyleClass().add("function-button");
                 }
@@ -255,6 +257,12 @@ public class Calculator extends Application {
 
             handleClear();
         }
+
+        // If % button is pressed
+        else if (input.equals("%")) {
+
+            handlePercent();
+        }
     }
 
     private void handleNumber(String input) {
@@ -347,7 +355,7 @@ public class Calculator extends Application {
         // SqRts of neg numbers undefined
         if (num < 0) {
 
-            disp.setText("Undefined");
+            disp.setText("Err");
         }
 
         else {
@@ -383,6 +391,14 @@ public class Calculator extends Application {
 
         disp.setText("0");
         log.clearOperation();
+        startNewNumber = true;
+    }
+
+    private void handlePercent() {
+
+        double num = Double.parseDouble(disp.getText());
+        double result = log.pctage(num);
+        disp.setText(log.formatResult(result));
         startNewNumber = true;
     }
 
