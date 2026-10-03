@@ -57,6 +57,11 @@ public class Logic {
 
     }
 
+    public double pctage(double num) {
+
+            return num / 100;
+    }
+
     public String formatResult(double result) {
 
         if (result == (long) result) {
