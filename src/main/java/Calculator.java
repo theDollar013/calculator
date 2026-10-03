@@ -7,6 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -14,18 +15,18 @@ import javafx.stage.Stage;
 import java.util.HashMap;
 import java.util.Map;
 
-public class calculator extends Application {
+public class Calculator extends Application {
 
     // Initializes display, first number, operator, and a boolean to start a new number
     private TextField disp;
     private boolean startNewNumber = true;
     private final Map<String, Button> buttons = new HashMap<>();
-    private final CalculatorLogic log = new CalculatorLogic();
+    private final Logic log = new Logic();
 
     @Override
     public void start(Stage stage) {
 
-        // Setting up display
+        // Sets up display
         disp = new TextField("0");
         disp.setEditable(false);
         disp.setFocusTraversable(false);
@@ -34,7 +35,7 @@ public class calculator extends Application {
         disp.setPrefHeight(80);
         disp.setMaxWidth(Double.MAX_VALUE);
 
-        // Setting up grid for buttons
+        // Sets up grid for buttons
         GridPane grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(10);
@@ -47,6 +48,14 @@ public class calculator extends Application {
             column.setPercentWidth(25);
             column.setHgrow(Priority.ALWAYS);
             grid.getColumnConstraints().add(column);
+        }
+
+        for (int i = 0; i < 5; i++) {
+
+            RowConstraints row = new RowConstraints();
+            row.setPercentHeight(20);
+            row.setVgrow(Priority.ALWAYS);
+            grid.getRowConstraints().add(row);
         }
 
         // Button grid layout
@@ -67,7 +76,6 @@ public class calculator extends Application {
                 String key = keys[row][column];
                 Button button = new Button(key);
                 buttons.put(key, button);
-                button.setPrefSize(75, 65);
                 button.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
                 // Assigns operator buttons their own class in .css file
@@ -90,6 +98,7 @@ public class calculator extends Application {
         VBox root = new VBox(15, disp, grid);
         root.setPadding(new Insets(20));
         root.setAlignment(Pos.CENTER);
+        VBox.setVgrow(grid, Priority.ALWAYS);
 
         Scene scene = new Scene(root, 400, 500);
 
@@ -199,148 +208,182 @@ public class calculator extends Application {
 
     private void handleInput(String input) {
 
-        // This was originally meant to convert X to * for Java to recognize as multiplication
-        // X didn't look good in GUI, so reverted back to *
-        // However, this line ensures selOp is initialized for compiling
-        String selOp = input.equals("X") ? "*" : input;
-
         // If any number is pressed
         if (input.matches("[0-9]")) {
 
-            if (startNewNumber || disp.getText().equals("0")) {
-
-                disp.setText(input);
-            }
-
-            else {
-
-                disp.setText(disp.getText() + input);
-            }
-
-            startNewNumber = false;
+            handleNumber(input);
         }
 
         // If . is pressed for decimal usage
         else if (input.equals(".")) {
 
-            // If an operator has already been selected, ensures the decimal is used on the second number
-            if (startNewNumber) {
-
-                disp.setText("0.");
-                startNewNumber = false;
-            }
-
-            // Verifies that there isn't already a decimal present
-            // If there is already a decimal present, nothing happens
-            else if (!disp.getText().contains(".")) {
-
-                disp.setText(disp.getText() + ".");
-
-            }
+            handleDecimal();
         }
 
         // If operator is pressed
         else if (input.matches("[+\\-*/]")) {
 
-            String op = input;
-
-            // If there is already a queued operation, calculate it first
-            if (log.hasOperation() && !startNewNumber) {
-
-                double secondNumber = Double.parseDouble(disp.getText());
-                double result = log.calcWith(secondNumber);
-                disp.setText(log.formatResult(result));
-                log.setOperation(result, op);
-            }
-
-            else {
-
-                double currNum = Double.parseDouble(disp.getText());
-                log.setOperation(currNum, op);
-            }
-
-            startNewNumber = true;
+            handleOperator(input);
         }
 
         // If backspace button is pushed
         else if (input.equals("⌫")) {
 
-            if (!startNewNumber) {
-
-                String currTxt = disp.getText();
-
-                if (currTxt.length() > 1) {
-
-                    disp.setText(currTxt.substring(0, currTxt.length() - 1));
-                }
-
-                else {
-
-                    disp.setText("0");
-                }
-            }
+            handleBackspace();
         }
 
         // If +/- button is pushed (neg-to-pos or pos-to-neg)
         else if (input.equals("+/-")) {
 
-            double currNum = Double.parseDouble(disp.getText());
-
-            // Prevents displaying -0
-            if (currNum != 0) {
-                currNum = currNum * -1;
-                disp.setText(log.formatResult(currNum));
-            }
+            handleSignChange();
         }
 
         // If square root button is pressed
         else if (input.equals("√")) {
 
-            double num = Double.parseDouble(disp.getText());
-
-            // SqRts of neg numbers undefined
-            if (num < 0) {
-
-                disp.setText("Undefined");
-            }
-
-            else {
-
-                num = log.sqrt(num);
-                disp.setText(log.formatResult(num));
-            }
+            handleSqRt();
         }
 
         // If equals button is pressed
         else if (input.equals("=")) {
 
-            if (log.hasOperation() && !startNewNumber) {
-
-                double secondNumber = Double.parseDouble(disp.getText());
-
-                try {
-
-                    double result = log.calcWith(secondNumber);
-                    disp.setText(log.formatResult(result));
-                }
-
-                // User attempted to divide by 0
-                catch (ArithmeticException e) {
-                    disp.setText(e.getMessage());
-                }
-
-                log.clearOperation();
-                startNewNumber = true;
-            }
+            handleEquals();
         }
 
         // If clear button is pressed
         else if (input.equals("C")) {
 
-            disp.setText("0");
+            handleClear();
+        }
+    }
+
+    private void handleNumber(String input) {
+
+        if (startNewNumber) {
+
+            disp.setText(input);
+            startNewNumber = false;
+        }
+
+        else {
+
+            disp.setText(disp.getText() + input);
+        }
+    }
+
+    private void handleDecimal() {
+
+        // If an operator has already been selected, ensures the decimal is used on the second number
+        if (startNewNumber) {
+
+            disp.setText("0.");
+            startNewNumber = false;
+        }
+
+        // Verifies that there isn't already a decimal present
+        // If there is already a decimal present, nothing happens
+        else if (!disp.getText().contains(".")) {
+
+            disp.setText(disp.getText() + ".");
+
+        }
+    }
+
+    private void handleOperator(String input) {
+
+        String op = input;
+
+        // If there is already a queued operation, calculate it first
+        if (log.hasOperation() && !startNewNumber) {
+
+            double secondNumber = Double.parseDouble(disp.getText());
+            double result = log.calcWith(secondNumber);
+            disp.setText(log.formatResult(result));
+            log.setOperation(result, op);
+        }
+
+        else {
+
+            double currNum = Double.parseDouble(disp.getText());
+            log.setOperation(currNum, op);
+        }
+
+        startNewNumber = true;
+    }
+
+    private void handleBackspace() {
+
+        if (!startNewNumber) {
+
+            String currTxt = disp.getText();
+
+            if (currTxt.length() > 1) {
+
+                disp.setText(currTxt.substring(0, currTxt.length() - 1));
+            }
+
+            else {
+
+                disp.setText("0");
+            }
+        }
+    }
+
+    private void handleSignChange() {
+
+        double currNum = Double.parseDouble(disp.getText());
+
+        // Prevents displaying -0
+        if (currNum != 0) {
+            currNum = currNum * -1;
+            disp.setText(log.formatResult(currNum));
+        }
+    }
+
+    private void handleSqRt() {
+
+        double num = Double.parseDouble(disp.getText());
+
+        // SqRts of neg numbers undefined
+        if (num < 0) {
+
+            disp.setText("Undefined");
+        }
+
+        else {
+
+            num = log.sqrt(num);
+            disp.setText(log.formatResult(num));
+        }
+    }
+
+    private void handleEquals() {
+
+        if (log.hasOperation() && !startNewNumber) {
+
+            double secondNumber = Double.parseDouble(disp.getText());
+
+            try {
+
+                double result = log.calcWith(secondNumber);
+                disp.setText(log.formatResult(result));
+            }
+
+            // User attempted to divide by 0
+            catch (ArithmeticException e) {
+                disp.setText(e.getMessage());
+            }
+
             log.clearOperation();
             startNewNumber = true;
         }
+    }
+
+    private void handleClear() {
+
+        disp.setText("0");
+        log.clearOperation();
+        startNewNumber = true;
     }
 
     private void pressButton(String key) {
@@ -358,4 +401,3 @@ public class calculator extends Application {
         launch(args);
     }
 }
-

@@ -1,4 +1,4 @@
-public class CalculatorLogic {
+public class Logic {
 
     private String op = "";
     private double firstNumber;
