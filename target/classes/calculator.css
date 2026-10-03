@@ -19,19 +19,19 @@
 .button {
 
     -fx-font-size: 20px;
-    -fx-background-color: #404040;
+    -fx-background-color: #606060;
     -fx-text-fill: white;
     -fx-background-radius: 8px;
 }
 
 .button:hover {
 
-    -fx-background-color: #505050;
+    -fx-background-color: #707070;
 }
 
 .button:pressed {
 
-    -fx-background-color: #606060;
+    -fx-background-color: #505050;
 }
 
 .operator-button {
@@ -49,19 +49,19 @@
     -fx-background-color: #cc7700;
 }
 
-.function-button: {
+.function-button {
 
-    -fx-background-color: #707070;
+    -fx-background-color: #404040;
 }
 
 .function-button:hover {
 
-    -fx-background-color: #808080;
+    -fx-background-color: #505050;
 }
 
 .function-button:pressed {
 
-    -fx-background-color: #606060;
+    -fx-background-color: #303030;
 }
 
 .keyboard-pressed {
