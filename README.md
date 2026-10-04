@@ -12,8 +12,8 @@ Currently, there are several buttons with no purpose. They are intentional place
 	implementation.
 
 Later builds will include support for:
-	- multi-line calculation history
-	- exponential calculations
-	- scientific notation
+- multi-line calculation history
+- exponential calculations
+- scientific notation
 	
 More features will be made available over time as they are thought of and implemented.
