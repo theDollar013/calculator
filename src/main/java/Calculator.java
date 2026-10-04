@@ -116,7 +116,7 @@ public class Calculator extends Application {
         displayBox.setId("display-box");
         VBox root = new VBox(25, displayBox, grid);
         root.setPadding(new Insets(10));
-        root.setAlignment(Pos.CENTER);
+        root.setAlignment(Pos.TOP_CENTER);
         VBox.setVgrow(grid, Priority.ALWAYS);
 
         Scene scene = new Scene(root, 500, 650);
@@ -220,12 +220,13 @@ public class Calculator extends Application {
         stage.setTitle("Calculator");
         stage.setScene(scene);
         stage.setResizable(true);
-        stage.setMinHeight(400);
+        stage.setMinHeight(500);
         stage.setMinWidth(350);
         stage.show();
     }
 
     private void handleInput(String input) {
+        // Handles any input, utilizing appropriate methods as necessary
 
         // If any number is pressed
         if (input.matches("[0-9]")) {
@@ -283,27 +284,32 @@ public class Calculator extends Application {
     }
 
     private void handleNumber(String input) {
+        // Handles usage of any number button
 
         if (startNewNumber) {
 
             disp.setText(input);
+            updateDispFont();
             startNewNumber = false;
         }
 
         else {
 
             disp.setText(disp.getText() + input);
+            updateDispFont();
         }
 
         updateExpHist();
     }
 
     private void handleDecimal() {
+        // Handles usage of decimal button
 
         // If an operator has already been selected, ensures the decimal is used on the second number
         if (startNewNumber) {
 
             disp.setText("0.");
+            updateDispFont();
             startNewNumber = false;
         }
 
@@ -312,13 +318,14 @@ public class Calculator extends Application {
         else if (!disp.getText().contains(".")) {
 
             disp.setText(disp.getText() + ".");
-
+            updateDispFont();
         }
 
         updateExpHist();
     }
 
     private void handleOperator(String input) {
+        // Handles usage of any operator button
 
         // If there is already a queued operation, calculate it first
         if (log.hasOperation() && !startNewNumber) {
@@ -330,6 +337,7 @@ public class Calculator extends Application {
             double result = log.calcWith(secondNumber);
             String formResult = log.formatResult(result);
             disp.setText(formResult);
+            updateDispFont();
             log.setOperation(result, input);
         }
 
@@ -346,6 +354,7 @@ public class Calculator extends Application {
     }
 
     private void handleBackspace() {
+        // Handles usage of backspace button
 
         if (!startNewNumber) {
 
@@ -354,18 +363,20 @@ public class Calculator extends Application {
             if (currTxt.length() > 1) {
 
                 disp.setText(currTxt.substring(0, currTxt.length() - 1));
-
+                updateDispFont();
                 updateExpHist();
             }
 
             else {
 
                 disp.setText("0");
+                updateDispFont();
             }
         }
     }
 
     private void handleSignChange() {
+        // Handles usage of sign change button (+/-)
 
         // Protects against sign change while waiting on number input
         if (!startNewNumber) {
@@ -377,11 +388,13 @@ public class Calculator extends Application {
                 currNum = currNum * -1;
                 String formNum = log.formatResult(currNum);
                 disp.setText(formNum);
+                updateDispFont();
 
                 // If sign change is part of an equation, displays sign change in calc. history
                 if (log.hasOperation()) {
 
                     histDisp.setText(expStart + " " + formNum);
+                    updateDispFont();
                 }
 
             }
@@ -389,6 +402,7 @@ public class Calculator extends Application {
     }
 
     private void handleSqRt() {
+        // Handles usage of square root button
 
         double num = Double.parseDouble(disp.getText());
         String origNum = disp.getText();
@@ -402,6 +416,7 @@ public class Calculator extends Application {
 
                 histDisp.setText(expStart + " √" + origNum);
                 disp.setText(formResult);
+                updateDispFont();
                 startNewNumber = false;
             }
 
@@ -410,6 +425,7 @@ public class Calculator extends Application {
 
                 histDisp.setText("√" + origNum + " = " + formResult);
                 disp.setText(formResult);
+                updateDispFont();
                 startNewNumber = true;
             }
         }
@@ -417,10 +433,12 @@ public class Calculator extends Application {
         catch (ArithmeticException e) {
 
             disp.setText(e.getMessage());
+            updateDispFont();
         }
     }
 
     private void handleEquals() {
+        // Handles usage of equals button
 
         if (log.hasOperation() && !startNewNumber) {
 
@@ -430,14 +448,17 @@ public class Calculator extends Application {
 
                 double result = log.calcWith(secondNumber);
                 disp.setText(log.formatResult(result));
+                updateDispFont();
                 String formResult = log.formatResult(result);
                 disp.setText(formResult);
+                updateDispFont();
                 histDisp.setText(histDisp.getText() + " = " + formResult);
             }
 
             // User attempted to divide by 0
             catch (ArithmeticException e) {
                 disp.setText(e.getMessage());
+                updateDispFont();
             }
 
             log.clearOperation();
@@ -446,8 +467,10 @@ public class Calculator extends Application {
     }
 
     private void handleClear() {
+        // Handles usage of clear button
 
         disp.setText("0");
+        updateDispFont();
         log.clearOperation();
         histDisp.clear();
         expStart = "";
@@ -455,6 +478,7 @@ public class Calculator extends Application {
     }
 
     private void handlePercent() {
+        // Handles percentages
 
         double num = Double.parseDouble(disp.getText());
         double result;
@@ -467,6 +491,7 @@ public class Calculator extends Application {
             formResult = log.formatResult(result);
             histDisp.setText(expStart + " " + num + "%");
             disp.setText(formResult);
+            updateDispFont();
             startNewNumber = false;
         }
 
@@ -477,6 +502,7 @@ public class Calculator extends Application {
             formResult = log.formatResult(result);
             histDisp.setText(num + "% = " + formResult);
             disp.setText(formResult);
+            updateDispFont();
             startNewNumber = true;
         }
     }
@@ -488,6 +514,33 @@ public class Calculator extends Application {
 
             histDisp.setText(expStart + " " + disp.getText());
         }
+    }
+
+    private void updateDispFont() {
+        // Updates font size on the display depending on number length
+
+        String currTxt = disp.getText();
+
+        if (currTxt.length() <= 19) {
+
+            disp.setStyle("-fx-font-size: 40px");
+        }
+
+        else if (currTxt.length() <= 25) {
+
+            disp.setStyle("-fx-font-size: 32px");
+        }
+
+        else if (currTxt.length() <= 31) {
+
+            disp.setStyle("-fx-font-size: 24px");
+        }
+
+        else if (currTxt.length() > 31) {
+
+            disp.setStyle("-fx-font-size: 18px");
+        }
+
     }
 
     private void pressButton(String key) {
