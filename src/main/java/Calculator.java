@@ -156,9 +156,14 @@ public class Calculator extends Application {
         scene.setOnKeyPressed(event -> {
 
                 String key = event.getText();
-                String visKey = key;
 
-                if (key.matches("[0-9]")) {
+                if (event.getCode() == KeyCode.DIGIT6 && event.isShiftDown()) {
+
+                    handleInput("^");
+                    pressButton("xʸ");
+                }
+
+                else if (key.matches("[0-9]")) {
 
                     handleInput(key);
                     pressButton(key);
@@ -193,12 +198,12 @@ public class Calculator extends Application {
         scene.setOnKeyReleased(event -> {
 
             String key = event.getText();
-            Button button = buttons.get(key);
+            Button button;
             String visKey = key;
 
-            if (button != null) {
+            if (event.getCode() == KeyCode.DIGIT6 && event.isShiftDown()) {
 
-                button.getStyleClass().remove("keyboard-pressed");
+                visKey = "xʸ";
             }
 
             else if (event.getCode() == KeyCode.BACK_SPACE) {
