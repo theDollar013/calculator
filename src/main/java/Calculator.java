@@ -312,22 +312,25 @@ public class Calculator extends Application {
 
     private void handleOperator(String input) {
 
-        String firstNum = disp.getText();
-        expStart = firstNum + " " + input;
-        histDisp.setText(expStart);
-
         // If there is already a queued operation, calculate it first
         if (log.hasOperation() && !startNewNumber) {
 
-            double secondNumber = Double.parseDouble(disp.getText());
+            String secNumStr = disp.getText();
+            double secondNumber = Double.parseDouble(secNumStr);
+            expStart = expStart + " " + secNumStr + " " + input;
+            histDisp.setText(expStart);
             double result = log.calcWith(secondNumber);
-            disp.setText(log.formatResult(result));
+            String formResult = log.formatResult(result);
+            disp.setText(formResult);
             log.setOperation(result, input);
         }
 
         else {
 
-            double currNum = Double.parseDouble(disp.getText());
+            String firstNum = disp.getText();
+            expStart = firstNum + " " + input;
+            histDisp.setText(expStart);
+            double currNum = Double.parseDouble(firstNum);
             log.setOperation(currNum, input);
         }
 
@@ -356,12 +359,24 @@ public class Calculator extends Application {
 
     private void handleSignChange() {
 
-        double currNum = Double.parseDouble(disp.getText());
+        // Protects against sign change while waiting on number input
+        if (!startNewNumber) {
 
-        // Prevents displaying -0
-        if (currNum != 0) {
-            currNum = currNum * -1;
-            disp.setText(log.formatResult(currNum));
+            double currNum = Double.parseDouble(disp.getText());
+
+            // Prevents displaying -0
+            if (currNum != 0) {
+                currNum = currNum * -1;
+                String formNum = log.formatResult(currNum);
+                disp.setText(formNum);
+
+                // If sign change is part of an equation, displays sign change in calc. history
+                if (log.hasOperation()) {
+
+                    histDisp.setText(expStart + " " + formNum);
+                }
+
+            }
         }
     }
 
