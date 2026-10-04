@@ -12,6 +12,21 @@ public class Controller {
     private String expStart;
     private final Logic log = new Logic();
 
+    public void clear() {
 
+        log.clearOperation();
+        expStart = "";
+        startNewNumber = true;
+    }
+
+    public boolean isStartNewNumber() {
+
+        return startNewNumber;
+    }
+
+    public void setStartNewNumber(boolean startNewNumber) {
+
+        this.startNewNumber = startNewNumber;
+    }
 
 }

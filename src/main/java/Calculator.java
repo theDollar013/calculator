@@ -28,7 +28,6 @@ public class Calculator extends Application {
     // Initializes display, first number, operator, and a boolean to start a new number
     private TextField disp;
     private TextField histDisp;
-    private boolean startNewNumber = true;
     private String expStart;
     private final Map<String, Button> buttons = new HashMap<>();
     private final Logic log = new Logic();
@@ -312,11 +311,11 @@ public class Calculator extends Application {
     private void handleNumber(String input) {
         // Handles usage of any number button
 
-        if (startNewNumber) {
+        if (control.isStartNewNumber()) {
 
             disp.setText(input);
             updateDispFont();
-            startNewNumber = false;
+            control.setStartNewNumber(false);
         }
 
         else {
@@ -332,11 +331,11 @@ public class Calculator extends Application {
         // Handles usage of decimal button
 
         // If an operator has already been selected, ensures the decimal is used on the second number
-        if (startNewNumber) {
+        if (control.isStartNewNumber()) {
 
             disp.setText("0.");
             updateDispFont();
-            startNewNumber = false;
+            control.setStartNewNumber(false);
         }
 
         // Verifies that there isn't already a decimal present
@@ -354,7 +353,7 @@ public class Calculator extends Application {
         // Handles usage of any operator button
 
         // If there is already a queued operation, calculate it first
-        if (log.hasOperation() && !startNewNumber) {
+        if (log.hasOperation() && !control.isStartNewNumber()) {
 
             String secNumStr = disp.getText();
             double secondNumber = Double.parseDouble(secNumStr);
@@ -376,13 +375,13 @@ public class Calculator extends Application {
             log.setOperation(currNum, input);
         }
 
-        startNewNumber = true;
+        control.setStartNewNumber(true);
     }
 
     private void handleBackspace() {
         // Handles usage of backspace button
 
-        if (!startNewNumber) {
+        if (!control.isStartNewNumber()) {
 
             String currTxt = disp.getText();
 
@@ -405,7 +404,7 @@ public class Calculator extends Application {
         // Handles usage of sign change button (+/-)
 
         // Protects against sign change while waiting on number input
-        if (!startNewNumber) {
+        if (!control.isStartNewNumber()) {
 
             double currNum = Double.parseDouble(disp.getText());
 
@@ -441,7 +440,7 @@ public class Calculator extends Application {
                 histDisp.setText(expStart + " √" + origNum);
                 disp.setText(formResult);
                 updateDispFont();
-                startNewNumber = false;
+                control.setStartNewNumber(false);
             }
 
             // Standalone square roots
@@ -450,7 +449,7 @@ public class Calculator extends Application {
                 histDisp.setText("√" + origNum + " = " + formResult);
                 disp.setText(formResult);
                 updateDispFont();
-                startNewNumber = true;
+                control.setStartNewNumber(true);
             }
         }
 
@@ -464,7 +463,7 @@ public class Calculator extends Application {
     private void handleEquals() {
         // Handles usage of equals button
 
-        if (log.hasOperation() && !startNewNumber) {
+        if (log.hasOperation() && !control.isStartNewNumber()) {
 
             double secondNumber = Double.parseDouble(disp.getText());
 
@@ -484,19 +483,17 @@ public class Calculator extends Application {
             }
 
             log.clearOperation();
-            startNewNumber = true;
+            control.setStartNewNumber(true);
         }
     }
 
     private void handleClear() {
         // Handles usage of clear button
 
+        control.clear();
         disp.setText("0");
         updateDispFont();
-        log.clearOperation();
         histDisp.clear();
-        expStart = "";
-        startNewNumber = true;
     }
 
     private void handlePercent() {
@@ -514,7 +511,7 @@ public class Calculator extends Application {
             histDisp.setText(expStart + " " + num + "%");
             disp.setText(formResult);
             updateDispFont();
-            startNewNumber = false;
+            control.setStartNewNumber(false);
         }
 
         // Standalone percentage
@@ -525,7 +522,7 @@ public class Calculator extends Application {
             histDisp.setText(num + "% = " + formResult);
             disp.setText(formResult);
             updateDispFont();
-            startNewNumber = true;
+            control.setStartNewNumber(true);
         }
     }
 
@@ -544,7 +541,7 @@ public class Calculator extends Application {
             histDisp.setText(expStart + " " + num + "²");
             disp.setText(formResult);
             updateDispFont();
-            startNewNumber = false;
+            control.setStartNewNumber(false);
         }
 
         // Standalone square
@@ -555,7 +552,7 @@ public class Calculator extends Application {
             histDisp.setText(num + "² = " + formResult);
             disp.setText(formResult);
             updateDispFont();
-            startNewNumber = true;
+            control.setStartNewNumber(true);
         }
     }
 
@@ -576,7 +573,7 @@ public class Calculator extends Application {
                 histDisp.setText(expStart + " " + num + "⁻¹");
                 disp.setText(formResult);
                 updateDispFont();
-                startNewNumber = false;
+                control.setStartNewNumber(false);
             }
 
             catch (ArithmeticException e) {
@@ -596,7 +593,7 @@ public class Calculator extends Application {
                 histDisp.setText(num + "⁻¹ = " + formResult);
                 disp.setText(formResult);
                 updateDispFont();
-                startNewNumber = true;
+                control.setStartNewNumber(true);
             }
 
             catch (ArithmeticException e) {
