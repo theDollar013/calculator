@@ -36,6 +36,7 @@ public class Calculator extends Application {
         disp.setId("display");
         disp.setPrefHeight(80);
         disp.setMaxWidth(Double.MAX_VALUE);
+        updateDispFont();
 
         // Sets up display for calculation history
         histDisp = new TextField();
@@ -394,9 +395,7 @@ public class Calculator extends Application {
                 if (log.hasOperation()) {
 
                     histDisp.setText(expStart + " " + formNum);
-                    updateDispFont();
                 }
-
             }
         }
     }
@@ -447,8 +446,6 @@ public class Calculator extends Application {
             try {
 
                 double result = log.calcWith(secondNumber);
-                disp.setText(log.formatResult(result));
-                updateDispFont();
                 String formResult = log.formatResult(result);
                 disp.setText(formResult);
                 updateDispFont();
@@ -540,7 +537,6 @@ public class Calculator extends Application {
 
             disp.setStyle("-fx-font-size: 18px");
         }
-
     }
 
     private void pressButton(String key) {
