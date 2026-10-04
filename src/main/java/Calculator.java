@@ -15,6 +15,14 @@ import javafx.stage.Stage;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ *
+ * Calculator.java handles the UI throughput into the JavaFX built GUI.
+ * It builds the user interface, handles IO, and allows interaction between the user and
+ * the program's functions.
+ *
+ **/
+
 public class Calculator extends Application {
 
     // Initializes display, first number, operator, and a boolean to start a new number
@@ -24,6 +32,7 @@ public class Calculator extends Application {
     private String expStart;
     private final Map<String, Button> buttons = new HashMap<>();
     private final Logic log = new Logic();
+    private final Controller control = new Controller();
 
     @Override
     public void start(Stage stage) {
