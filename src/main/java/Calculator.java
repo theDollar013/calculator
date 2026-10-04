@@ -72,13 +72,14 @@ public class Calculator extends Application {
         String[][] keys = {
 
                 {"", "C", "√", "⌫"},
-                {"", "", "%", "/"},
+                {"", "xʸ", "%", "/"},
                 {"7", "8", "9", "*"},
                 {"4", "5", "6", "-"},
                 {"1", "2", "3", "+"},
                 {"+/-", "0", ".", "="}
         };
 
+        // Creates buttons using the grid layout
         for (int row = 0; row < keys.length; row++) {
 
             for (int column = 0; column < keys[row].length; column++) {
@@ -103,7 +104,7 @@ public class Calculator extends Application {
 
                 // Assigns function buttons their own class in .css file
                 if (key.equals("C") || key.equals("⌫")
-                        || key.equals("%") || key.equals("√")) {
+                        || key.equals("%") || key.equals("√") || key.equals("xʸ")) {
 
                     button.getStyleClass().add("function-button");
                 }
@@ -169,7 +170,7 @@ public class Calculator extends Application {
                     pressButton(key);
                 }
 
-                else if (key.matches("[+\\-*/]")) {
+                else if (key.matches("[+\\-*^/]")) {
 
                     handleInput(key);
                     pressButton(key);
@@ -281,6 +282,11 @@ public class Calculator extends Application {
         else if (input.equals("%")) {
 
             handlePercent();
+        }
+
+        else if (input.equals("xʸ") || input.equals("^")) {
+
+            handleOperator("^");
         }
     }
 

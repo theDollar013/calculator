@@ -46,6 +46,10 @@ public class Logic {
 
                 return a / b;
 
+            case "^":
+
+                return Math.pow(a, b);
+
             default:
                 throw new IllegalArgumentException("ERR");
         }
