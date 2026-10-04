@@ -470,9 +470,6 @@ public class Calculator extends Application {
 
             try {
 
-                //double result = log.calcWith(secondNumber);
-                //String formResult = log.formatResult(result);
-
                 String result = control.handleEquals(secondNumber);
                 disp.setText(result);
                 updateDispFont();
@@ -486,7 +483,6 @@ public class Calculator extends Application {
             }
 
             control.clear();
-            control.setStartNewNumber(true);
         }
     }
 

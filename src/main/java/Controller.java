@@ -53,15 +53,7 @@ public class Controller {
 
     public String handleEquals(double secNum) {
 
-        try {
-
-            double result = log.calcWith(secNum);
-            return log.formatResult(result);
-        }
-
-        catch (ArithmeticException e) {
-
-            return e.getMessage();
-        }
+        double result = log.calcWith(secNum);
+        return log.formatResult(result);
     }
 }
