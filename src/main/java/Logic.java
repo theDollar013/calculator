@@ -67,6 +67,18 @@ public class Logic {
         return num / 100;
     }
 
+    public double calculatePctage(double percent) {
+
+        double decPct = percent / 100;
+
+        if (op.equals("+") || op.equals("-")) {
+
+            return firstNumber * decPct;
+        }
+
+        return decPct;
+    }
+
     public String formatResult(double result) {
 
         if (result == (long) result) {

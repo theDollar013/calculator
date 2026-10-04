@@ -371,19 +371,30 @@ public class Calculator extends Application {
         String origNum = disp.getText();
 
         try {
-
             num = log.sqrt(num);
             String formResult = log.formatResult(num);
-            disp.setText(log.formatResult(num));
-            histDisp.setText("√" + origNum + " = " + num);
+
+            // Square roots part of an equation
+            if (log.hasOperation()) {
+
+                histDisp.setText(expStart + " √" + origNum);
+                disp.setText(formResult);
+                startNewNumber = false;
+            }
+
+            // Standalone square roots
+            else {
+
+                histDisp.setText("√" + origNum + " = " + formResult);
+                disp.setText(formResult);
+                startNewNumber = true;
+            }
         }
 
         catch (ArithmeticException e) {
 
             disp.setText(e.getMessage());
         }
-
-        startNewNumber = true;
     }
 
     private void handleEquals() {
@@ -423,9 +434,28 @@ public class Calculator extends Application {
     private void handlePercent() {
 
         double num = Double.parseDouble(disp.getText());
-        double result = log.pctage(num);
-        disp.setText(log.formatResult(result));
-        startNewNumber = true;
+        double result;
+        String formResult;
+
+        // Percentage part of an equation (like calculating totals + tip)
+        if (log.hasOperation()) {
+
+            result = log.calculatePctage(num);
+            formResult = log.formatResult(result);
+            histDisp.setText(expStart + " " + num + "%");
+            disp.setText(formResult);
+            startNewNumber = false;
+        }
+
+        // Standalone percentage
+        else {
+
+            result  = log.pctage(num);
+            formResult = log.formatResult(result);
+            histDisp.setText(num + "% = " + formResult);
+            disp.setText(formResult);
+            startNewNumber = true;
+        }
     }
 
     private void updateExpHist() {
