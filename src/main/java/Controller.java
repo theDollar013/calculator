@@ -29,4 +29,39 @@ public class Controller {
         this.startNewNumber = startNewNumber;
     }
 
+    public String getExpStart() {
+
+        return expStart;
+    }
+
+    public void setExpStart(String expStart) {
+
+        this.expStart = expStart;
+    }
+
+    public boolean hasOperation() {
+
+        return log.hasOperation();
+    }
+
+    public void handleOperator(String currDisp, String op) {
+
+        expStart = currDisp + " " + op;
+        double currNum = Double.parseDouble(currDisp);
+        log.setOperation(currNum, op);
+    }
+
+    public String handleEquals(double secNum) {
+
+        try {
+
+            double result = log.calcWith(secNum);
+            return log.formatResult(result);
+        }
+
+        catch (ArithmeticException e) {
+
+            return e.getMessage();
+        }
+    }
 }

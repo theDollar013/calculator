@@ -368,11 +368,12 @@ public class Calculator extends Application {
 
         else {
 
-            String firstNum = disp.getText();
-            expStart = firstNum + " " + input;
-            histDisp.setText(expStart);
-            double currNum = Double.parseDouble(firstNum);
-            log.setOperation(currNum, input);
+            //String firstNum = disp.getText();
+            control.handleOperator(disp.getText(), input);
+            //expStart = firstNum + " " + input;
+            histDisp.setText(control.getExpStart());
+            //double currNum = Double.parseDouble(firstNum);
+            //log.setOperation(currNum, input);
         }
 
         control.setStartNewNumber(true);
@@ -463,17 +464,19 @@ public class Calculator extends Application {
     private void handleEquals() {
         // Handles usage of equals button
 
-        if (log.hasOperation() && !control.isStartNewNumber()) {
+        if (control.hasOperation() && !control.isStartNewNumber()) {
 
             double secondNumber = Double.parseDouble(disp.getText());
 
             try {
 
-                double result = log.calcWith(secondNumber);
-                String formResult = log.formatResult(result);
-                disp.setText(formResult);
+                //double result = log.calcWith(secondNumber);
+                //String formResult = log.formatResult(result);
+
+                String result = control.handleEquals(secondNumber);
+                disp.setText(result);
                 updateDispFont();
-                histDisp.setText(histDisp.getText() + " = " + formResult);
+                histDisp.setText(histDisp.getText() + " = " + result);
             }
 
             // User attempted to divide by 0
@@ -482,7 +485,7 @@ public class Calculator extends Application {
                 updateDispFont();
             }
 
-            log.clearOperation();
+            control.clear();
             control.setStartNewNumber(true);
         }
     }
