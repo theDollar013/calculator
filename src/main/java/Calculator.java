@@ -71,7 +71,7 @@ public class Calculator extends Application {
         // Button grid layout
         String[][] keys = {
 
-                {"", "C", "√", "⌫"},
+                {"C", "x⁻¹", "√", "⌫"},
                 {"x²", "xʸ", "%", "/"},
                 {"7", "8", "9", "*"},
                 {"4", "5", "6", "-"},
@@ -90,21 +90,16 @@ public class Calculator extends Application {
                 buttons.put(key, button);
                 button.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
-                // Assigns operator buttons their own class in .css file
-                if (key.matches("[+\\-/*]")) {
-
-                    button.getStyleClass().add("operator-button");
-                }
-
                 // Assigns equals sign its own class in .css file
                 if (key.matches("=")) {
 
                     button.getStyleClass().add("equals-button");
                 }
 
-                // Assigns function buttons their own class in .css file
+                // Assigns function and operator buttons their own class in .css file
                 if (key.equals("C") || key.equals("⌫")
-                        || key.equals("%") || key.equals("√") || key.equals("xʸ") || key.equals("x²")) {
+                        || key.equals("%") || key.equals("√") || key.equals("xʸ")
+                        || key.equals("x²") || key.equals("x⁻¹") || key.matches("[+\\-/*]")) {
 
                     button.getStyleClass().add("function-button");
                 }
@@ -292,6 +287,11 @@ public class Calculator extends Application {
         else if (input.equals("x²")) {
 
             handleSquare();
+        }
+
+        else if (input.equals("x⁻¹")) {
+
+            handleReciprocal();
         }
 
         else if (input.equals("xʸ") || input.equals("^")) {
@@ -547,6 +547,54 @@ public class Calculator extends Application {
             disp.setText(formResult);
             updateDispFont();
             startNewNumber = true;
+        }
+    }
+
+    private void handleReciprocal() {
+        // Handles reciprocals
+
+        double num = Double.parseDouble(disp.getText());
+        double result;
+        String formResult;
+
+        // Reciprocal part of an equation
+        if (log.hasOperation()) {
+
+            try {
+
+                result = log.calculateRecip(num);
+                formResult = log.formatResult(result);
+                histDisp.setText(expStart + " " + num + "⁻¹");
+                disp.setText(formResult);
+                updateDispFont();
+                startNewNumber = false;
+            }
+
+            catch (ArithmeticException e) {
+
+                disp.setText(e.getMessage());
+                updateDispFont();
+            }
+        }
+
+        // Standalone reciprocal
+        else {
+
+            try {
+
+                result = log.calculateRecip(num);
+                formResult = log.formatResult(result);
+                histDisp.setText(num + "⁻¹ = " + formResult);
+                disp.setText(formResult);
+                updateDispFont();
+                startNewNumber = true;
+            }
+
+            catch (ArithmeticException e) {
+
+                disp.setText(e.getMessage());
+                updateDispFont();
+            }
         }
     }
 

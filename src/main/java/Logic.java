@@ -88,6 +88,16 @@ public class Logic {
         return num * num;
     }
 
+    public double calculateRecip(double num) {
+
+        if (num == 0) {
+
+            throw new ArithmeticException("ERR");
+        }
+
+        return 1 / num;
+    }
+
     public String formatResult(double result) {
 
         if (result == (long) result) {
