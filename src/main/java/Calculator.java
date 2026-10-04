@@ -287,12 +287,7 @@ public class Calculator extends Application {
             disp.setText(disp.getText() + input);
         }
 
-
-        // Handles numbers in the calculation history box
-        if (log.hasOperation()) {
-
-            histDisp.setText(expStart + " " + disp.getText());
-        }
+        updateExpHist();
     }
 
     private void handleDecimal() {
@@ -312,16 +307,11 @@ public class Calculator extends Application {
 
         }
 
-        // Handles decimals in the calculation history box
-        if (log.hasOperation()) {
-
-            histDisp.setText(expStart + " " + disp.getText());
-        }
+        updateExpHist();
     }
 
     private void handleOperator(String input) {
 
-        String op = input;
         String firstNum = disp.getText();
         expStart = firstNum + " " + input;
         histDisp.setText(expStart);
@@ -332,13 +322,13 @@ public class Calculator extends Application {
             double secondNumber = Double.parseDouble(disp.getText());
             double result = log.calcWith(secondNumber);
             disp.setText(log.formatResult(result));
-            log.setOperation(result, op);
+            log.setOperation(result, input);
         }
 
         else {
 
             double currNum = Double.parseDouble(disp.getText());
-            log.setOperation(currNum, op);
+            log.setOperation(currNum, input);
         }
 
         startNewNumber = true;
@@ -354,10 +344,7 @@ public class Calculator extends Application {
 
                 disp.setText(currTxt.substring(0, currTxt.length() - 1));
 
-                if (log.hasOperation()) {
-
-                    histDisp.setText(expStart + " " + disp.getText());
-                }
+                updateExpHist();
             }
 
             else {
@@ -381,18 +368,22 @@ public class Calculator extends Application {
     private void handleSqRt() {
 
         double num = Double.parseDouble(disp.getText());
+        String origNum = disp.getText();
 
-        // SqRts of neg numbers undefined
-        if (num < 0) {
-
-            disp.setText("Err");
-        }
-
-        else {
+        try {
 
             num = log.sqrt(num);
+            String formResult = log.formatResult(num);
             disp.setText(log.formatResult(num));
+            histDisp.setText("√" + origNum + " = " + num);
         }
+
+        catch (ArithmeticException e) {
+
+            disp.setText(e.getMessage());
+        }
+
+        startNewNumber = true;
     }
 
     private void handleEquals() {
@@ -424,6 +415,8 @@ public class Calculator extends Application {
 
         disp.setText("0");
         log.clearOperation();
+        histDisp.clear();
+        expStart = "";
         startNewNumber = true;
     }
 
@@ -433,6 +426,15 @@ public class Calculator extends Application {
         double result = log.pctage(num);
         disp.setText(log.formatResult(result));
         startNewNumber = true;
+    }
+
+    private void updateExpHist() {
+        // Handles numbers in the calculation history box
+
+        if (log.hasOperation()) {
+
+            histDisp.setText(expStart + " " + disp.getText());
+        }
     }
 
     private void pressButton(String key) {

@@ -41,25 +41,30 @@ public class Logic {
 
                 if (b == 0) {
 
-                    throw new ArithmeticException("Cannot divide by zero");
+                    throw new ArithmeticException("ERR");
                 }
 
                 return a / b;
 
             default:
-                throw new IllegalArgumentException("Invalid Operator");
+                throw new IllegalArgumentException("ERR");
         }
     }
 
     public double sqrt(double num) {
 
-            return Math.sqrt(num);
+        // SqRts of neg numbers undefined
+        if (num < 0) {
 
+            throw new ArithmeticException("ERR");
+        }
+
+        return Math.sqrt(num);
     }
 
     public double pctage(double num) {
 
-            return num / 100;
+        return num / 100;
     }
 
     public String formatResult(double result) {
