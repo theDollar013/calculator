@@ -46,8 +46,8 @@ public class Calculator extends Application {
 
         // Sets up grid for buttons
         GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(10);
+        grid.setHgap(7);
+        grid.setVgap(7);
         grid.setAlignment(Pos.CENTER);
 
         // Allows button expansion with window expansion
@@ -89,9 +89,15 @@ public class Calculator extends Application {
                 button.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
                 // Assigns operator buttons their own class in .css file
-                if (key.matches("[+\\-/*=]")) {
+                if (key.matches("[+\\-/*]")) {
 
                     button.getStyleClass().add("operator-button");
+                }
+
+                // Assigns equals sign its own class in .css file
+                if (key.matches("=")) {
+
+                    button.getStyleClass().add("equals-button");
                 }
 
                 // Assigns function buttons their own class in .css file
@@ -106,12 +112,12 @@ public class Calculator extends Application {
             }
         }
 
-        VBox root = new VBox(15, histDisp, disp, grid);
-        root.setPadding(new Insets(20));
+        VBox root = new VBox(25, histDisp, disp, grid);
+        root.setPadding(new Insets(10));
         root.setAlignment(Pos.CENTER);
         VBox.setVgrow(grid, Priority.ALWAYS);
 
-        Scene scene = new Scene(root, 400, 500);
+        Scene scene = new Scene(root, 500, 650);
 
         // Links class to .css file for gui customization
         scene.getStylesheets().add(getClass().getResource("/calculator.css").toExternalForm());
