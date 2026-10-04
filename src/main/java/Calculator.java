@@ -19,7 +19,9 @@ public class Calculator extends Application {
 
     // Initializes display, first number, operator, and a boolean to start a new number
     private TextField disp;
+    private TextField histDisp;
     private boolean startNewNumber = true;
+    private String expStart;
     private final Map<String, Button> buttons = new HashMap<>();
     private final Logic log = new Logic();
 
@@ -34,6 +36,13 @@ public class Calculator extends Application {
         disp.setId("display");
         disp.setPrefHeight(80);
         disp.setMaxWidth(Double.MAX_VALUE);
+
+        // Sets up display for calculation history
+        histDisp = new TextField();
+        histDisp.setEditable(false);
+        histDisp.setFocusTraversable(false);
+        histDisp.setAlignment(Pos.CENTER_RIGHT);
+        histDisp.setId("history-display");
 
         // Sets up grid for buttons
         GridPane grid = new GridPane();
@@ -97,7 +106,7 @@ public class Calculator extends Application {
             }
         }
 
-        VBox root = new VBox(15, disp, grid);
+        VBox root = new VBox(15, histDisp, disp, grid);
         root.setPadding(new Insets(20));
         root.setAlignment(Pos.CENTER);
         VBox.setVgrow(grid, Priority.ALWAYS);
@@ -277,6 +286,13 @@ public class Calculator extends Application {
 
             disp.setText(disp.getText() + input);
         }
+
+
+        // Handles numbers in the calculation history box
+        if (log.hasOperation()) {
+
+            histDisp.setText(expStart + " " + disp.getText());
+        }
     }
 
     private void handleDecimal() {
@@ -295,11 +311,20 @@ public class Calculator extends Application {
             disp.setText(disp.getText() + ".");
 
         }
+
+        // Handles decimals in the calculation history box
+        if (log.hasOperation()) {
+
+            histDisp.setText(expStart + " " + disp.getText());
+        }
     }
 
     private void handleOperator(String input) {
 
         String op = input;
+        String firstNum = disp.getText();
+        expStart = firstNum + " " + input;
+        histDisp.setText(expStart);
 
         // If there is already a queued operation, calculate it first
         if (log.hasOperation() && !startNewNumber) {
@@ -328,6 +353,11 @@ public class Calculator extends Application {
             if (currTxt.length() > 1) {
 
                 disp.setText(currTxt.substring(0, currTxt.length() - 1));
+
+                if (log.hasOperation()) {
+
+                    histDisp.setText(expStart + " " + disp.getText());
+                }
             }
 
             else {
@@ -375,6 +405,9 @@ public class Calculator extends Application {
 
                 double result = log.calcWith(secondNumber);
                 disp.setText(log.formatResult(result));
+                String formResult = log.formatResult(result);
+                disp.setText(formResult);
+                histDisp.setText(histDisp.getText() + " = " + formResult);
             }
 
             // User attempted to divide by 0
