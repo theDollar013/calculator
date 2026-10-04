@@ -72,7 +72,7 @@ public class Calculator extends Application {
         String[][] keys = {
 
                 {"", "C", "√", "⌫"},
-                {"", "xʸ", "%", "/"},
+                {"x²", "xʸ", "%", "/"},
                 {"7", "8", "9", "*"},
                 {"4", "5", "6", "-"},
                 {"1", "2", "3", "+"},
@@ -104,7 +104,7 @@ public class Calculator extends Application {
 
                 // Assigns function buttons their own class in .css file
                 if (key.equals("C") || key.equals("⌫")
-                        || key.equals("%") || key.equals("√") || key.equals("xʸ")) {
+                        || key.equals("%") || key.equals("√") || key.equals("xʸ") || key.equals("x²")) {
 
                     button.getStyleClass().add("function-button");
                 }
@@ -152,7 +152,7 @@ public class Calculator extends Application {
             }
         });
 
-        // Adds functionality for keyboard input while giving the button a "pressed" look when pressed
+        // Adds functionality for giving the button a "pressed" look when pressed with keyboard input
         scene.setOnKeyPressed(event -> {
 
                 String key = event.getText();
@@ -175,7 +175,7 @@ public class Calculator extends Application {
                     pressButton(key);
                 }
 
-                else if (key.matches("[+\\-*^/]")) {
+                else if (key.matches("[+\\-*/]")) {
 
                     handleInput(key);
                     pressButton(key);
@@ -194,7 +194,7 @@ public class Calculator extends Application {
                 }
         });
 
-        // Removes the "pressed" look when released
+        // Removes the "pressed" look when keyboard input is released
         scene.setOnKeyReleased(event -> {
 
             String key = event.getText();
@@ -287,6 +287,11 @@ public class Calculator extends Application {
         else if (input.equals("%")) {
 
             handlePercent();
+        }
+
+        else if (input.equals("x²")) {
+
+            handleSquare();
         }
 
         else if (input.equals("xʸ") || input.equals("^")) {
@@ -509,6 +514,36 @@ public class Calculator extends Application {
             result  = log.pctage(num);
             formResult = log.formatResult(result);
             histDisp.setText(num + "% = " + formResult);
+            disp.setText(formResult);
+            updateDispFont();
+            startNewNumber = true;
+        }
+    }
+
+    private void handleSquare() {
+        // Handles squaring numbers
+
+        double num = Double.parseDouble(disp.getText());
+        double result;
+        String formResult;
+
+        // Square part of an equation
+        if (log.hasOperation()) {
+
+            result = log.calculateSquare(num);
+            formResult = log.formatResult(result);
+            histDisp.setText(expStart + " " + num + "²");
+            disp.setText(formResult);
+            updateDispFont();
+            startNewNumber = false;
+        }
+
+        // Standalone square
+        else {
+
+            result = log.calculateSquare(num);
+            formResult = log.formatResult(result);
+            histDisp.setText(num + "² = " + formResult);
             disp.setText(formResult);
             updateDispFont();
             startNewNumber = true;

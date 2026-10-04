@@ -83,6 +83,11 @@ public class Logic {
         return decPct;
     }
 
+    public double calculateSquare(double num) {
+
+        return num * num;
+    }
+
     public String formatResult(double result) {
 
         if (result == (long) result) {
