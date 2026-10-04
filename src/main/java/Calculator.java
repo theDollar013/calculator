@@ -112,7 +112,9 @@ public class Calculator extends Application {
             }
         }
 
-        VBox root = new VBox(25, histDisp, disp, grid);
+        VBox displayBox = new VBox(histDisp, disp);
+        displayBox.setId("display-box");
+        VBox root = new VBox(25, displayBox, grid);
         root.setPadding(new Insets(10));
         root.setAlignment(Pos.CENTER);
         VBox.setVgrow(grid, Priority.ALWAYS);

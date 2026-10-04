@@ -3,26 +3,30 @@
     -fx-background-color: #202020;
 }
 
-#display {
+#display-box {
 
-    -fx-font-size:40px;
-    -fx-background-radius: 10px;
+    -fx-background-color: #292929;
     -fx-border-radius: 10px;
-    -fx-padding: 10px 15px;
-    -fx-text-fill: white;
-    -fx-background-color: #303030;
-    -fx-border-color: transparent;
-    -fx-focus-color: transparent;
-    -fx-faint-focus-color: transparent;
 }
 
 #history-display {
 
-    -fx-font-size: 14px;
+    -fx-font-size: 15px;
     -fx-background-color: transparent;
     -fx-text-fill: #aaaaaa;
     -fx-border-color: transparent;
     -fx-padding: 5px 10px;
+}
+
+#display {
+
+    -fx-font-size:40px;
+    -fx-padding: 10px 15px;
+    -fx-text-fill: white;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
 }
 
 .button {
