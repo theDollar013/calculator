@@ -34,6 +34,34 @@ public class Calculator extends Application {
     @Override
     public void start(Stage stage) {
 
+        setupDisplays();
+
+        GridPane grid = createButtonGrid();
+
+        VBox displayBox = new VBox(histDisp, disp);
+        displayBox.setId("display-box");
+        VBox root = new VBox(25, displayBox, grid);
+        root.setPadding(new Insets(10));
+        root.setAlignment(Pos.TOP_CENTER);
+        VBox.setVgrow(grid, Priority.ALWAYS);
+
+        Scene scene = new Scene(root, 500, 650);
+
+        // Links class to .css file for gui customization
+        scene.getStylesheets().add(getClass().getResource("/calculator.css").toExternalForm());
+
+        setupKBControls(scene);
+
+        stage.setTitle("Calculator");
+        stage.setScene(scene);
+        stage.setResizable(true);
+        stage.setMinHeight(500);
+        stage.setMinWidth(350);
+        stage.show();
+    }
+
+    private void setupDisplays() {
+
         // Sets up display
         disp = new TextField("0");
         disp.setEditable(false);
@@ -50,6 +78,9 @@ public class Calculator extends Application {
         histDisp.setFocusTraversable(false);
         histDisp.setAlignment(Pos.CENTER_RIGHT);
         histDisp.setId("history-display");
+    }
+
+    private GridPane createButtonGrid() {
 
         // Sets up grid for buttons
         GridPane grid = new GridPane();
@@ -57,7 +88,7 @@ public class Calculator extends Application {
         grid.setVgap(7);
         grid.setAlignment(Pos.CENTER);
 
-        // Allows button expansion with window expansion
+        // Allows button expansion along columns with window expansion
         for (int i = 0; i < 4; i++) {
 
             ColumnConstraints column = new ColumnConstraints();
@@ -66,6 +97,7 @@ public class Calculator extends Application {
             grid.getColumnConstraints().add(column);
         }
 
+        // Allows button expansion among rows with window expansion
         for (int i = 0; i < 6; i++) {
 
             RowConstraints row = new RowConstraints();
@@ -115,17 +147,10 @@ public class Calculator extends Application {
             }
         }
 
-        VBox displayBox = new VBox(histDisp, disp);
-        displayBox.setId("display-box");
-        VBox root = new VBox(25, displayBox, grid);
-        root.setPadding(new Insets(10));
-        root.setAlignment(Pos.TOP_CENTER);
-        VBox.setVgrow(grid, Priority.ALWAYS);
+        return grid;
+    }
 
-        Scene scene = new Scene(root, 500, 650);
-
-        // Links class to .css file for gui customization
-        scene.getStylesheets().add(getClass().getResource("/calculator.css").toExternalForm());
+    private void setupKBControls(Scene scene) {
 
         // Handles Enter key presses as "=" rather than selecting a button
         scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
@@ -156,43 +181,43 @@ public class Calculator extends Application {
         // Adds functionality for giving the button a "pressed" look when pressed with keyboard input
         scene.setOnKeyPressed(event -> {
 
-                String key = event.getText();
+            String key = event.getText();
 
-                if (event.getCode() == KeyCode.DIGIT6 && event.isShiftDown()) {
+            if (event.getCode() == KeyCode.DIGIT6 && event.isShiftDown()) {
 
-                    handleInput("^");
-                    pressButton("xʸ");
-                }
+                handleInput("^");
+                pressButton("xʸ");
+            }
 
-                else if (key.matches("[0-9]")) {
+            else if (key.matches("[0-9]")) {
 
-                    handleInput(key);
-                    pressButton(key);
-                }
+                handleInput(key);
+                pressButton(key);
+            }
 
-                else if (key.equals(".")) {
+            else if (key.equals(".")) {
 
-                    handleInput(key);
-                    pressButton(key);
-                }
+                handleInput(key);
+                pressButton(key);
+            }
 
-                else if (key.matches("[+\\-*/]")) {
+            else if (key.matches("[+\\-*/]")) {
 
-                    handleInput(key);
-                    pressButton(key);
-                }
+                handleInput(key);
+                pressButton(key);
+            }
 
-                else if (event.getCode() == KeyCode.BACK_SPACE) {
+            else if (event.getCode() == KeyCode.BACK_SPACE) {
 
-                    handleInput("⌫");
-                    pressButton("⌫");
-                }
+                handleInput("⌫");
+                pressButton("⌫");
+            }
 
-                else if (event.getCode() == KeyCode.ESCAPE) {
+            else if (event.getCode() == KeyCode.ESCAPE) {
 
-                    handleInput("C");
-                    pressButton("C");
-                }
+                handleInput("C");
+                pressButton("C");
+            }
         });
 
         // Removes the "pressed" look when keyboard input is released
@@ -224,13 +249,6 @@ public class Calculator extends Application {
                 button.getStyleClass().remove("keyboard-pressed");
             }
         });
-
-        stage.setTitle("Calculator");
-        stage.setScene(scene);
-        stage.setResizable(true);
-        stage.setMinHeight(500);
-        stage.setMinWidth(350);
-        stage.show();
     }
 
     private void handleInput(String input) {
@@ -459,20 +477,20 @@ public class Calculator extends Application {
     private void handlePercent() {
         // Handles percentages
 
-        double num = Double.parseDouble(disp.getText());
+        String origNum = disp.getText();
         String result = control.handlePercent(disp.getText());
 
         // Percentage part of an equation (like calculating totals + tip)
         if (control.hasOperation()) {
 
-            histDisp.setText(control.getExpStart() + " " + num + "%");
+            histDisp.setText(control.getExpStart() + " " + origNum + "%");
             control.setStartNewNumber(false);
         }
 
         // Standalone percentage
         else {
 
-            histDisp.setText(num + "% = " + result);
+            histDisp.setText(origNum + "% = " + result);
             control.setStartNewNumber(true);
         }
 
