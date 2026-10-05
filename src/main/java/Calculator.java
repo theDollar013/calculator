@@ -25,12 +25,10 @@ import java.util.Map;
 
 public class Calculator extends Application {
 
-    // Initializes display, first number, operator, and a boolean to start a new number
+    // Initializes display, button map, and controller object
     private TextField disp;
     private TextField histDisp;
-    private String expStart;
     private final Map<String, Button> buttons = new HashMap<>();
-    private final Logic log = new Logic();
     private final Controller control = new Controller();
 
     @Override
