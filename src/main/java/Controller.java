@@ -39,17 +39,37 @@ public class Controller {
         return log.hasOperation();
     }
 
-    public String handleNumber(String currDisp, String op) {
+    public String handleNumber(String currDisp, String input) {
 
         if (startNewNumber) {
+
             startNewNumber = false;
-            return op;
+            return input;
         }
 
         else {
 
-            return currDisp + op;
+            return currDisp + input;
         }
+    }
+
+    public String handleDecimal(String currDisp) {
+
+        // If an operator has already been selected, ensures the decimal is used on the second number
+        if (startNewNumber) {
+
+            startNewNumber = false;
+            currDisp = "0.";
+        }
+
+        // Verifies that there isn't already a decimal present
+        // If there is already a decimal present, nothing happens
+        else if (!currDisp.contains(".")) {
+
+            currDisp = currDisp + ".";
+        }
+
+        return currDisp;
     }
 
     public String handleOperator(String currDisp, String op) {

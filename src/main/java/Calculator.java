@@ -327,17 +327,6 @@ public class Calculator extends Application {
     private void handleNumber(String input) {
         // Handles usage of any number button
 
-        /**if (control.isStartNewNumber()) {
-
-            disp.setText(input);
-            control.setStartNewNumber(false);
-        }
-
-        else {
-
-            disp.setText(disp.getText() + input);
-        }**/
-
         disp.setText(control.handleNumber(disp.getText(), input));
         updateDispFont();
         updateExpHist();
@@ -346,20 +335,7 @@ public class Calculator extends Application {
     private void handleDecimal() {
         // Handles usage of decimal button
 
-        // If an operator has already been selected, ensures the decimal is used on the second number
-        if (control.isStartNewNumber()) {
-
-            disp.setText("0.");
-            control.setStartNewNumber(false);
-        }
-
-        // Verifies that there isn't already a decimal present
-        // If there is already a decimal present, nothing happens
-        else if (!disp.getText().contains(".")) {
-
-            disp.setText(disp.getText() + ".");
-        }
-
+        disp.setText(control.handleDecimal(disp.getText()));
         updateDispFont();
         updateExpHist();
     }
