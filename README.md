@@ -1,4 +1,4 @@
-# calculator
+# Calculator
 A Java-built calculator utilizing a JavaFX GUI
 Developed by theDollar013
 
