@@ -1,10 +1,10 @@
 /**
- *
- * Controller.java handles all control aspects of the program without altering the UI.
- * It handles all operations involving what is needed to run calculations without running
- * the calculations themselves.
- *
- */
+  *
+  * Controller.java handles all control aspects of the program without altering the UI.
+  * It handles all operations involving what is needed to run calculations without running
+  * the calculations themselves.
+  *
+  **/
 
 public class Controller {
 
@@ -63,6 +63,22 @@ public class Controller {
             double currNum = Double.parseDouble(currDisp);
             log.setOperation(currNum, op);
             return currDisp;
+        }
+    }
+
+    public String handleSignChange(String currDisp) {
+
+        // Protects against sign change while waiting on number input
+        if (!startNewNumber) {
+
+            double currNum = Double.parseDouble(currDisp);
+
+            // Prevents displaying -0
+            if (currNum != 0) {
+
+                currNum = currNum * -1;
+                return log.formatResult(currNum);
+            }
         }
     }
 

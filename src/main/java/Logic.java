@@ -1,8 +1,8 @@
 /**
- *
- * Logic.java handles all mathematical calculations for the program.
- *
- */
+  *
+  * Logic.java handles all mathematical calculations for the program.
+  *
+  **/
 
 public class Logic {
 

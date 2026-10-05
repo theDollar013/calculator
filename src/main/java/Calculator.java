@@ -16,12 +16,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *
- * Calculator.java handles the UI throughput into the JavaFX built GUI.
- * It builds the user interface, handles IO, and allows interaction between the user and
- * the program's functions.
- *
- **/
+  *
+  * Calculator.java handles the UI throughput into the JavaFX built GUI.
+  * It builds the user interface, handles IO, and allows interaction between the user and
+  * the program's functions.
+  *
+  **/
 
 public class Calculator extends Application {
 
@@ -383,8 +383,18 @@ public class Calculator extends Application {
     private void handleSignChange() {
         // Handles usage of sign change button (+/-)
 
+        String signChange = control.handleSignChange(disp.getText())
+        disp.setText(signChange);
+        updateDispFont();
+
+        // If sign change is part of an equation, displays sign change in calc. history
+        if (control.hasOperation()) {
+
+            histDisp.setText(control.getExpStart() + " " + signChange);
+        }
+
         // Protects against sign change while waiting on number input
-        if (!control.isStartNewNumber()) {
+        /**if (!control.isStartNewNumber()) {
 
             double currNum = Double.parseDouble(disp.getText());
 
@@ -401,7 +411,7 @@ public class Calculator extends Application {
                     histDisp.setText(expStart + " " + formNum);
                 }
             }
-        }
+        }**/
     }
 
     private void handleSqRt() {
