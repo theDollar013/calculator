@@ -392,26 +392,6 @@ public class Calculator extends Application {
 
             histDisp.setText(control.getExpStart() + " " + signChange);
         }
-
-        // Protects against sign change while waiting on number input
-        /**if (!control.isStartNewNumber()) {
-
-            double currNum = Double.parseDouble(disp.getText());
-
-            // Prevents displaying -0
-            if (currNum != 0) {
-                currNum = currNum * -1;
-                String formNum = log.formatResult(currNum);
-                disp.setText(formNum);
-                updateDispFont();
-
-                // If sign change is part of an equation, displays sign change in calc. history
-                if (log.hasOperation()) {
-
-                    histDisp.setText(expStart + " " + formNum);
-                }
-            }
-        }**/
     }
 
     private void handleSqRt() {
@@ -518,29 +498,38 @@ public class Calculator extends Application {
         // Handles squaring numbers
 
         double num = Double.parseDouble(disp.getText());
-        double result;
-        String formResult;
+        String txt = disp.getText();
+        //double result;
+        //String formResult;
 
         // Square part of an equation
-        if (log.hasOperation()) {
+        if (control.hasOperation()) {
 
-            result = log.calculateSquare(num);
-            formResult = log.formatResult(result);
-            histDisp.setText(expStart + " " + num + "²");
-            disp.setText(formResult);
+            histDisp.setText(control.getExpStart() + " " + num + "²");
+            disp.setText(control.handleSquare(txt));
             updateDispFont();
-            control.setStartNewNumber(false);
+
+            //result = log.calculateSquare(num);
+            //formResult = log.formatResult(result);
+            //histDisp.setText(expStart + " " + num + "²");
+            //disp.setText(formResult);
+            //updateDispFont();
+            //control.setStartNewNumber(false);
         }
 
         // Standalone square
         else {
 
-            result = log.calculateSquare(num);
-            formResult = log.formatResult(result);
-            histDisp.setText(num + "² = " + formResult);
-            disp.setText(formResult);
+            histDisp.setText(num + "² = " + control.handleSquare(txt));
+            disp.setText(control.handleSquare(txt));
             updateDispFont();
-            control.setStartNewNumber(true);
+
+            //result = log.calculateSquare(num);
+            //formResult = log.formatResult(result);
+            //histDisp.setText(num + "² = " + formResult);
+            //disp.setText(formResult);
+            //updateDispFont();
+            //control.setStartNewNumber(true);
         }
     }
 

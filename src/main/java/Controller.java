@@ -80,10 +80,7 @@ public class Controller {
                 return log.formatResult(currNum);
             }
 
-            else {
-
-                return currDisp;
-            }
+            return currDisp;
         }
 
         return currDisp;
@@ -93,5 +90,15 @@ public class Controller {
 
         double result = log.calcWith(secNum);
         return log.formatResult(result);
+    }
+
+    public String handleSquare(String currDisp) {
+
+        double num = Double.parseDouble(currDisp);
+        double result;
+
+            result = log.calculateSquare(num);
+            startNewNumber = true;
+            return log.formatResult(result);
     }
 }
