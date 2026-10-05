@@ -1,3 +1,5 @@
+import java.util.logging.Logger;
+
 /**
   *
   * Logic.java handles all mathematical calculations for the program.
@@ -8,6 +10,7 @@ public class Logic {
 
     private String op = "";
     private double firstNumber;
+    private static final Logger LOGGER = Logger.getLogger(Logic.class.getName());
 
     public void setOperation(double num, String operator) {
 
@@ -32,6 +35,8 @@ public class Logic {
 
     public double calculate(double a, double b, String op) {
 
+        LOGGER.fine(() -> "Calculating: " + a + " " + op + " " + b);
+
         switch (op) {
 
             case "+":
@@ -47,6 +52,7 @@ public class Logic {
 
                 if (b == 0) {
 
+                    LOGGER.warning("Division by zero attempted");
                     throw new ArithmeticException("ERR");
                 }
 
@@ -66,6 +72,7 @@ public class Logic {
         // SqRts of neg numbers undefined
         if (num < 0) {
 
+            LOGGER.warning("Square root of a negative number attempted");
             throw new ArithmeticException("ERR");
         }
 
