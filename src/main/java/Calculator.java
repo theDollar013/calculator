@@ -383,7 +383,7 @@ public class Calculator extends Application {
     private void handleSignChange() {
         // Handles usage of sign change button (+/-)
 
-        String signChange = control.handleSignChange(disp.getText())
+        String signChange = control.handleSignChange(disp.getText());
         disp.setText(signChange);
         updateDispFont();
 

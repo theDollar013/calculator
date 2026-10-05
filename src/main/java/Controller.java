@@ -79,7 +79,14 @@ public class Controller {
                 currNum = currNum * -1;
                 return log.formatResult(currNum);
             }
+
+            else {
+
+                return currDisp;
+            }
         }
+
+        return currDisp;
     }
 
     public String handleEquals(double secNum) {
