@@ -343,10 +343,20 @@ public class Calculator extends Application {
     private void handleOperator(String input) {
         // Handles usage of any operator button
 
-        String result = control.handleOperator(disp.getText(), input);
-        disp.setText(result);
+        try {
+
+            String result = control.handleOperator(disp.getText(), input);
+            disp.setText(result);
+            histDisp.setText(control.getExpStart());
+        }
+
+        catch (ArithmeticException e) {
+
+            disp.setText(e.getMessage());
+            control.clear();
+        }
+
         updateDispFont();
-        histDisp.setText(control.getExpStart());
     }
 
     private void handleBackspace() {

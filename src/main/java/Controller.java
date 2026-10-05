@@ -79,6 +79,11 @@ public class Controller {
             if (currDisp.length() > 1) {
 
                 currDisp = currDisp.substring(0, currDisp.length() - 1);
+                if (currDisp.equals("-")) {
+
+                    currDisp = "0";
+                    startNewNumber = true;
+                }
             }
 
             else {
