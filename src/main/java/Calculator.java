@@ -447,7 +447,7 @@ public class Calculator extends Application {
 
         if (control.hasOperation() && !control.isStartNewNumber()) {
 
-            double secondNumber = Double.parseDouble(disp.getText());
+            String secondNumber = disp.getText();
 
             try {
 

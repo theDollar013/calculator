@@ -87,8 +87,9 @@ public class Controller {
         return log.formatResult(log.sqrt(num));
     }
 
-    public String handleEquals(double secNum) {
+    public String handleEquals(String currDisp) {
 
+        double secNum = Double.parseDouble(currDisp);
         double result = log.calcWith(secNum);
         return log.formatResult(result);
     }
