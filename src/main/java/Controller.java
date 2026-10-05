@@ -1,8 +1,8 @@
 /**
   *
   * Controller.java handles all control aspects of the program without altering the UI.
-  * It handles all operations involving what is needed to run calculations without running
-  * the calculations themselves.
+  * It manages the state of the calculator and coordinates input between the UI and
+  * calculation logic.
   *
   **/
 
@@ -84,8 +84,7 @@ public class Controller {
     public String handleSqRt(String currDisp) {
 
         double num = Double.parseDouble(currDisp);
-        num = log.sqrt(num);
-        return log.formatResult(num);
+        return log.formatResult(log.sqrt(num));
     }
 
     public String handleEquals(double secNum) {
@@ -117,18 +116,14 @@ public class Controller {
     public String handleSquare(String currDisp) {
 
         double num = Double.parseDouble(currDisp);
-        double result;
-
-        result = log.calculateSquare(num);
+        double result = log.calculateSquare(num);
         return log.formatResult(result);
     }
 
     public String handleReciprocal(String currDisp) {
 
         double num = Double.parseDouble(currDisp);
-        double result;
-
-        result = log.calculateRecip(num);
+        double result = log.calculateRecip(num);
         return log.formatResult(result);
     }
 }

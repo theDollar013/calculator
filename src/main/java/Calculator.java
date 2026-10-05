@@ -368,6 +368,7 @@ public class Calculator extends Application {
 
         String result = control.handleOperator(disp.getText(), input);
         disp.setText(result);
+        updateDispFont();
         histDisp.setText(control.getExpStart());
         control.setStartNewNumber(true);
     }
@@ -478,7 +479,7 @@ public class Calculator extends Application {
         // Handles percentages
 
         String origNum = disp.getText();
-        String result = control.handlePercent(disp.getText());
+        String result = control.handlePercent(origNum);
 
         // Percentage part of an equation (like calculating totals + tip)
         if (control.hasOperation()) {
