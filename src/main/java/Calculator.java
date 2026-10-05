@@ -510,9 +510,8 @@ public class Calculator extends Application {
 
     private void handleReciprocal() {
         // Handles reciprocals
-
-        double num = Double.parseDouble(disp.getText());
-        String txt = disp.getText();
+        
+        String origNum = disp.getText();
         String result;
 
         try {
@@ -520,8 +519,8 @@ public class Calculator extends Application {
             // Reciprocal part of an equation
             if (control.hasOperation()) {
 
-                result = control.handleReciprocal(txt);
-                histDisp.setText(control.getExpStart() + " " + num + "⁻¹");
+                result = control.handleReciprocal(origNum);
+                histDisp.setText(control.getExpStart() + " " + origNum + "⁻¹");
                 disp.setText(result);
                 updateDispFont();
                 control.setStartNewNumber(false);
@@ -529,8 +528,8 @@ public class Calculator extends Application {
 
             else {
 
-                result = control.handleReciprocal(txt);
-                histDisp.setText(num + "⁻¹ = " + result);
+                result = control.handleReciprocal(origNum);
+                histDisp.setText(origNum + "⁻¹ = " + result);
                 disp.setText(result);
                 updateDispFont();
                 control.setStartNewNumber(true);
