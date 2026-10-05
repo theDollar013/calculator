@@ -86,6 +86,13 @@ public class Controller {
         return currDisp;
     }
 
+    public String handleSqRt(String currDisp) {
+
+        double num = Double.parseDouble(currDisp);
+        num = log.sqrt(num);
+        return log.formatResult(num);
+    }
+
     public String handleEquals(double secNum) {
 
         double result = log.calcWith(secNum);

@@ -397,30 +397,27 @@ public class Calculator extends Application {
     private void handleSqRt() {
         // Handles usage of square root button
 
-        double num = Double.parseDouble(disp.getText());
         String origNum = disp.getText();
 
         try {
-            num = log.sqrt(num);
-            String formResult = log.formatResult(num);
+            String result = control.handleSqRt(origNum);
 
-            // Square roots part of an equation
-            if (log.hasOperation()) {
+            // Square roots that are part of an equation
+            if (control.hasOperation()) {
 
-                histDisp.setText(expStart + " √" + origNum);
-                disp.setText(formResult);
-                updateDispFont();
+                histDisp.setText(control.getExpStart() + " √" + origNum);
                 control.setStartNewNumber(false);
             }
 
             // Standalone square roots
             else {
 
-                histDisp.setText("√" + origNum + " = " + formResult);
-                disp.setText(formResult);
-                updateDispFont();
+                histDisp.setText("√" + origNum + " = " + result);
                 control.setStartNewNumber(true);
             }
+
+            disp.setText(result);
+            updateDispFont();
         }
 
         catch (ArithmeticException e) {
