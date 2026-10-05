@@ -353,20 +353,20 @@ public class Calculator extends Application {
         // Handles usage of any operator button
 
         // If there is already a queued operation, calculate it first
-        if (log.hasOperation() && !control.isStartNewNumber()) {
+        //if (control.hasOperation() && !control.isStartNewNumber()) {
 
-            String secNumStr = disp.getText();
-            double secondNumber = Double.parseDouble(secNumStr);
-            expStart = expStart + " " + secNumStr + " " + input;
-            histDisp.setText(expStart);
-            double result = log.calcWith(secondNumber);
-            String formResult = log.formatResult(result);
-            disp.setText(formResult);
-            updateDispFont();
-            log.setOperation(result, input);
-        }
+            //String secNumStr = disp.getText();
+            //double secondNumber = Double.parseDouble(secNumStr);
+            //expStart = expStart + " " + secNumStr + " " + input;
+            //histDisp.setText(control.getExpStart());
+            //double result = log.calcWith(secondNumber);
+            //String formResult = log.formatResult(result);
+            //disp.setText(formResult);
+            //updateDispFont();
+            //log.setOperation(result, input);
+        //}
 
-        else {
+        //else {
 
             //String firstNum = disp.getText();
             control.handleOperator(disp.getText(), input);
@@ -374,7 +374,7 @@ public class Calculator extends Application {
             histDisp.setText(control.getExpStart());
             //double currNum = Double.parseDouble(firstNum);
             //log.setOperation(currNum, input);
-        }
+        //}
 
         control.setStartNewNumber(true);
     }

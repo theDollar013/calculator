@@ -44,11 +44,25 @@ public class Controller {
         return log.hasOperation();
     }
 
-    public void handleOperator(String currDisp, String op) {
+    public String handleOperator(String currDisp, String op) {
 
-        expStart = currDisp + " " + op;
-        double currNum = Double.parseDouble(currDisp);
-        log.setOperation(currNum, op);
+        // If there is already a queued operation, calculate it first
+        if (hasOperation() && isStartNewNumber()) {
+
+            double secondNumber = Double.parseDouble(currDisp);
+            expStart = expStart + " " + currDisp + " " + op;
+            double result = log.calcWith(secondNumber);
+            String formResult = log.formatResult(result);
+            return formResult;
+        }
+
+        else {
+
+            expStart = currDisp + " " + op;
+            double currNum = Double.parseDouble(currDisp);
+            log.setOperation(currNum, op);
+            return currDisp;
+        }
     }
 
     public String handleEquals(double secNum) {
