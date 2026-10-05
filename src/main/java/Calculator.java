@@ -524,7 +524,7 @@ public class Calculator extends Application {
         String result;
 
         // Reciprocal part of an equation
-        if (log.hasOperation()) {
+        if (control.hasOperation()) {
 
             try {
 
