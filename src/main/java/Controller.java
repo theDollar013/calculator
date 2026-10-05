@@ -84,6 +84,7 @@ public class Controller {
             else {
 
                 currDisp = "0";
+                startNewNumber = true;
             }
         }
 
