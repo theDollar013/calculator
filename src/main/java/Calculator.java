@@ -515,10 +515,10 @@ public class Calculator extends Application {
         String txt = disp.getText();
         String result;
 
-        // Reciprocal part of an equation
-        if (control.hasOperation()) {
+        try {
 
-            try {
+            // Reciprocal part of an equation
+            if (control.hasOperation()) {
 
                 result = control.handleReciprocal(txt);
                 histDisp.setText(control.getExpStart() + " " + num + "⁻¹");
@@ -527,17 +527,7 @@ public class Calculator extends Application {
                 control.setStartNewNumber(false);
             }
 
-            catch (ArithmeticException e) {
-
-                disp.setText(e.getMessage());
-                updateDispFont();
-            }
-        }
-
-        // Standalone reciprocal
-        else {
-
-            try {
+            else {
 
                 result = control.handleReciprocal(txt);
                 histDisp.setText(num + "⁻¹ = " + result);
@@ -545,12 +535,12 @@ public class Calculator extends Application {
                 updateDispFont();
                 control.setStartNewNumber(true);
             }
+        }
 
-            catch (ArithmeticException e) {
+        catch (ArithmeticException e) {
 
-                disp.setText(e.getMessage());
-                updateDispFont();
-            }
+            disp.setText(e.getMessage());
+            updateDispFont();
         }
     }
 
