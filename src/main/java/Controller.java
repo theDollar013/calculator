@@ -98,7 +98,6 @@ public class Controller {
         double result;
 
             result = log.calculateSquare(num);
-            startNewNumber = true;
             return log.formatResult(result);
     }
 }

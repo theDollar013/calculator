@@ -508,6 +508,7 @@ public class Calculator extends Application {
             histDisp.setText(control.getExpStart() + " " + num + "²");
             disp.setText(control.handleSquare(txt));
             updateDispFont();
+            control.setStartNewNumber(false);
 
             //result = log.calculateSquare(num);
             //formResult = log.formatResult(result);
@@ -523,6 +524,7 @@ public class Calculator extends Application {
             histDisp.setText(num + "² = " + control.handleSquare(txt));
             disp.setText(control.handleSquare(txt));
             updateDispFont();
+            control.setStartNewNumber(true);
 
             //result = log.calculateSquare(num);
             //formResult = log.formatResult(result);
