@@ -369,7 +369,8 @@ public class Calculator extends Application {
         //else {
 
             //String firstNum = disp.getText();
-            control.handleOperator(disp.getText(), input);
+            String result = control.handleOperator(disp.getText(), input);
+            disp.setText(result);
             //expStart = firstNum + " " + input;
             histDisp.setText(control.getExpStart());
             //double currNum = Double.parseDouble(firstNum);
