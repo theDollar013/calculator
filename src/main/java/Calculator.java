@@ -312,16 +312,15 @@ public class Calculator extends Application {
         if (control.isStartNewNumber()) {
 
             disp.setText(input);
-            updateDispFont();
             control.setStartNewNumber(false);
         }
 
         else {
 
             disp.setText(disp.getText() + input);
-            updateDispFont();
         }
 
+        updateDispFont();
         updateExpHist();
     }
 
@@ -332,7 +331,6 @@ public class Calculator extends Application {
         if (control.isStartNewNumber()) {
 
             disp.setText("0.");
-            updateDispFont();
             control.setStartNewNumber(false);
         }
 
@@ -341,9 +339,9 @@ public class Calculator extends Application {
         else if (!disp.getText().contains(".")) {
 
             disp.setText(disp.getText() + ".");
-            updateDispFont();
         }
 
+        updateDispFont();
         updateExpHist();
     }
 
@@ -366,15 +364,15 @@ public class Calculator extends Application {
             if (currTxt.length() > 1) {
 
                 disp.setText(currTxt.substring(0, currTxt.length() - 1));
-                updateDispFont();
                 updateExpHist();
             }
 
             else {
 
                 disp.setText("0");
-                updateDispFont();
             }
+
+            updateDispFont();
         }
     }
 
@@ -436,16 +434,15 @@ public class Calculator extends Application {
 
                 String result = control.handleEquals(secondNumber);
                 disp.setText(result);
-                updateDispFont();
                 histDisp.setText(histDisp.getText() + " = " + result);
             }
 
             // User attempted to divide by 0
             catch (ArithmeticException e) {
                 disp.setText(e.getMessage());
-                updateDispFont();
             }
 
+            updateDispFont();
             control.clear();
         }
     }
@@ -486,21 +483,20 @@ public class Calculator extends Application {
     private void handleSquare() {
         // Handles squaring numbers
 
-        double num = Double.parseDouble(disp.getText());
-        String txt = disp.getText();
-        String result = control.handleSquare(txt);
+        String origNum = disp.getText();
+        String result = control.handleSquare(origNum);
 
         // Square part of an equation
         if (control.hasOperation()) {
 
-            histDisp.setText(control.getExpStart() + " " + num + "²");
+            histDisp.setText(control.getExpStart() + " " + origNum + "²");
             control.setStartNewNumber(false);
         }
 
         // Standalone square
         else {
 
-            histDisp.setText(num + "² = " + result);
+            histDisp.setText(origNum + "² = " + result);
             control.setStartNewNumber(true);
         }
 
@@ -510,30 +506,28 @@ public class Calculator extends Application {
 
     private void handleReciprocal() {
         // Handles reciprocals
-        
+
         String origNum = disp.getText();
-        String result;
 
         try {
+
+            String result = control.handleReciprocal(origNum);
 
             // Reciprocal part of an equation
             if (control.hasOperation()) {
 
-                result = control.handleReciprocal(origNum);
                 histDisp.setText(control.getExpStart() + " " + origNum + "⁻¹");
-                disp.setText(result);
-                updateDispFont();
                 control.setStartNewNumber(false);
             }
 
             else {
 
-                result = control.handleReciprocal(origNum);
                 histDisp.setText(origNum + "⁻¹ = " + result);
-                disp.setText(result);
-                updateDispFont();
                 control.setStartNewNumber(true);
             }
+
+            disp.setText(result);
+            updateDispFont();
         }
 
         catch (ArithmeticException e) {
