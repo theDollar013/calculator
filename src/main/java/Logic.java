@@ -35,6 +35,8 @@ public class Logic {
 
     public double calculate(double a, double b, String op) {
 
+        LOGGER.fine(() -> "Calculating: " + a + " " + op + " " + b);
+
         switch (op) {
 
             case "+":
@@ -50,6 +52,7 @@ public class Logic {
 
                 if (b == 0) {
 
+                    LOGGER.warning("Division by zero attempted");
                     throw new ArithmeticException("ERR");
                 }
 
@@ -69,6 +72,7 @@ public class Logic {
         // SqRts of neg numbers undefined
         if (num < 0) {
 
+            LOGGER.warning("Square root of a negative number attempted");
             throw new ArithmeticException("ERR");
         }
 
