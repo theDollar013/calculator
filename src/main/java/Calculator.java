@@ -370,7 +370,6 @@ public class Calculator extends Application {
         disp.setText(result);
         updateDispFont();
         histDisp.setText(control.getExpStart());
-        control.setStartNewNumber(true);
     }
 
     private void handleBackspace() {

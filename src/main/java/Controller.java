@@ -41,15 +41,16 @@ public class Controller {
 
     public String handleOperator(String currDisp, String op) {
 
+        String returnValue = currDisp;
+
         // If there is already a queued operation, calculate it first
         if (hasOperation() && !isStartNewNumber()) {
 
             double secondNumber = Double.parseDouble(currDisp);
             expStart = expStart + " " + currDisp + " " + op;
             double result = log.calcWith(secondNumber);
-            String formResult = log.formatResult(result);
+            returnValue = log.formatResult(result);
             log.setOperation(result, op);
-            return formResult;
         }
 
         else {
@@ -57,8 +58,10 @@ public class Controller {
             expStart = currDisp + " " + op;
             double currNum = Double.parseDouble(currDisp);
             log.setOperation(currNum, op);
-            return currDisp;
         }
+
+        startNewNumber = true;
+        return returnValue;
     }
 
     public String handleSignChange(String currDisp) {
