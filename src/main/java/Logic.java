@@ -1,3 +1,5 @@
+import java.util.logging.Logger;
+
 /**
   *
   * Logic.java handles all mathematical calculations for the program.
@@ -8,6 +10,7 @@ public class Logic {
 
     private String op = "";
     private double firstNumber;
+    private static final Logger LOGGER = Logger.getLogger(Logic.class.getName());
 
     public void setOperation(double num, String operator) {
 
