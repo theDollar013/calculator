@@ -42,12 +42,12 @@ public class Controller {
     public String handleNumber(String currDisp, String op) {
 
         if (startNewNumber) {
-
+            startNewNumber = false;
             return op;
         }
 
         else {
-            
+
             return currDisp + op;
         }
     }
