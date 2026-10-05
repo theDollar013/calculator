@@ -465,30 +465,24 @@ public class Calculator extends Application {
         // Handles percentages
 
         double num = Double.parseDouble(disp.getText());
-        double result;
-        String formResult;
+        String result = control.handlePercent(disp.getText());
 
         // Percentage part of an equation (like calculating totals + tip)
-        if (log.hasOperation()) {
+        if (control.hasOperation()) {
 
-            result = log.calculatePctage(num);
-            formResult = log.formatResult(result);
-            histDisp.setText(expStart + " " + num + "%");
-            disp.setText(formResult);
-            updateDispFont();
+            histDisp.setText(control.getExpStart() + " " + num + "%");
             control.setStartNewNumber(false);
         }
 
         // Standalone percentage
         else {
 
-            result  = log.pctage(num);
-            formResult = log.formatResult(result);
-            histDisp.setText(num + "% = " + formResult);
-            disp.setText(formResult);
-            updateDispFont();
+            histDisp.setText(num + "% = " + result);
             control.setStartNewNumber(true);
         }
+
+        disp.setText(result);
+        updateDispFont();
     }
 
     private void handleSquare() {
@@ -529,9 +523,6 @@ public class Calculator extends Application {
             try {
 
                 result = control.handleReciprocal(txt);
-
-                //result = log.calculateRecip(num);
-                //formResult = log.formatResult(result);
                 histDisp.setText(control.getExpStart() + " " + num + "⁻¹");
                 disp.setText(result);
                 updateDispFont();
@@ -551,9 +542,6 @@ public class Calculator extends Application {
             try {
 
                 result = control.handleReciprocal(txt);
-
-                //result = log.calculateRecip(num);
-                //formResult = log.formatResult(result);
                 histDisp.setText(num + "⁻¹ = " + result);
                 disp.setText(result);
                 updateDispFont();

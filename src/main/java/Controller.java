@@ -99,6 +99,26 @@ public class Controller {
         return log.formatResult(result);
     }
 
+    public String handlePercent(String currDisp) {
+
+        double num = Double.parseDouble(currDisp);
+        double result;
+
+        // Percentage part of an equation (like calculating totals + tip)
+        if (hasOperation()) {
+
+            result = log.calculatePctage(num);
+            return log.formatResult(result);
+        }
+
+        // Standalone percentage
+        else {
+
+            result = log.pctage(num);
+            return log.formatResult(result);
+        }
+    }
+
     public String handleSquare(String currDisp) {
 
         double num = Double.parseDouble(currDisp);
