@@ -39,6 +39,19 @@ public class Controller {
         return log.hasOperation();
     }
 
+    public String handleNumber(String currDisp, String op) {
+
+        if (startNewNumber) {
+
+            return op;
+        }
+
+        else {
+            
+            return currDisp + op;
+        }
+    }
+
     public String handleOperator(String currDisp, String op) {
 
         String returnValue = currDisp;

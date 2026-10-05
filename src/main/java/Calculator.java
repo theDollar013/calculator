@@ -327,7 +327,7 @@ public class Calculator extends Application {
     private void handleNumber(String input) {
         // Handles usage of any number button
 
-        if (control.isStartNewNumber()) {
+        /**if (control.isStartNewNumber()) {
 
             disp.setText(input);
             control.setStartNewNumber(false);
@@ -336,8 +336,9 @@ public class Calculator extends Application {
         else {
 
             disp.setText(disp.getText() + input);
-        }
+        }**/
 
+        disp.setText(control.handleNumber(disp.getText(), input));
         updateDispFont();
         updateExpHist();
     }
