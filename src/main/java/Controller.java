@@ -97,7 +97,7 @@ public class Controller {
         double num = Double.parseDouble(currDisp);
         double result;
 
-            result = log.calculateSquare(num);
-            return log.formatResult(result);
+        result = log.calculateSquare(num);
+        return log.formatResult(result);
     }
 }

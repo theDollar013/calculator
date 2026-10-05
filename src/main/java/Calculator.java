@@ -499,6 +499,8 @@ public class Calculator extends Application {
 
         double num = Double.parseDouble(disp.getText());
         String txt = disp.getText();
+        String result = control.handleSquare(txt);
+
         //double result;
         //String formResult;
 
@@ -506,33 +508,18 @@ public class Calculator extends Application {
         if (control.hasOperation()) {
 
             histDisp.setText(control.getExpStart() + " " + num + "²");
-            disp.setText(control.handleSquare(txt));
-            updateDispFont();
             control.setStartNewNumber(false);
-
-            //result = log.calculateSquare(num);
-            //formResult = log.formatResult(result);
-            //histDisp.setText(expStart + " " + num + "²");
-            //disp.setText(formResult);
-            //updateDispFont();
-            //control.setStartNewNumber(false);
         }
 
         // Standalone square
         else {
 
-            histDisp.setText(num + "² = " + control.handleSquare(txt));
-            disp.setText(control.handleSquare(txt));
-            updateDispFont();
+            histDisp.setText(num + "² = " + result);
             control.setStartNewNumber(true);
-
-            //result = log.calculateSquare(num);
-            //formResult = log.formatResult(result);
-            //histDisp.setText(num + "² = " + formResult);
-            //disp.setText(formResult);
-            //updateDispFont();
-            //control.setStartNewNumber(true);
         }
+
+        disp.setText(result);
+        updateDispFont();
     }
 
     private void handleReciprocal() {
