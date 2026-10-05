@@ -13,3 +13,30 @@ Later builds will include support for:
 - scientific notation
 	
 More features may be made available over time as they are thought of and implemented.
+
+## Building and Running
+
+Requirements:
+- JDK 25
+- Apache Maven
+
+To Run the Calculator:
+```bash
+mvn javafx:run
+```
+
+To Run the Unit Tests:
+```bash
+mvn test
+```
+
+To Build the Project and Run Verification:
+```bash
+mvn clean verify
+```
+
+The generated JAR is located at:
+`target/javafx-calculator-1.0.jar`
+
+NOTE: The JAR is a build artifact. In order to launch the calculator with its JavaFX
+dependencies, use `mvn javafx:run`.
