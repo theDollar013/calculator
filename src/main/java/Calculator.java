@@ -352,23 +352,9 @@ public class Calculator extends Application {
     private void handleBackspace() {
         // Handles usage of backspace button
 
-        if (!control.isStartNewNumber()) {
-
-            String currTxt = disp.getText();
-
-            if (currTxt.length() > 1) {
-
-                disp.setText(currTxt.substring(0, currTxt.length() - 1));
-                updateExpHist();
-            }
-
-            else {
-
-                disp.setText("0");
-            }
-
-            updateDispFont();
-        }
+        disp.setText(control.handleBackspace(disp.getText()));
+        updateDispFont();
+        updateExpHist();
     }
 
     private void handleSignChange() {

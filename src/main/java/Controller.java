@@ -72,6 +72,24 @@ public class Controller {
         return currDisp;
     }
 
+    public String handleBackspace(String currDisp) {
+
+        if (!startNewNumber) {
+
+            if (currDisp.length() > 1) {
+
+                currDisp = currDisp.substring(0, currDisp.length() - 1);
+            }
+
+            else {
+
+                currDisp = "0";
+            }
+        }
+
+        return currDisp;
+    }
+
     public String handleOperator(String currDisp, String op) {
 
         String returnValue = currDisp;
