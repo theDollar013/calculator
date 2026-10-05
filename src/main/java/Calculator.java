@@ -498,9 +498,6 @@ public class Calculator extends Application {
         String txt = disp.getText();
         String result = control.handleSquare(txt);
 
-        //double result;
-        //String formResult;
-
         // Square part of an equation
         if (control.hasOperation()) {
 
@@ -523,18 +520,20 @@ public class Calculator extends Application {
         // Handles reciprocals
 
         double num = Double.parseDouble(disp.getText());
-        double result;
-        String formResult;
+        String txt = disp.getText();
+        String result;
 
         // Reciprocal part of an equation
         if (log.hasOperation()) {
 
             try {
 
-                result = log.calculateRecip(num);
-                formResult = log.formatResult(result);
-                histDisp.setText(expStart + " " + num + "⁻¹");
-                disp.setText(formResult);
+                result = control.handleReciprocal(txt);
+
+                //result = log.calculateRecip(num);
+                //formResult = log.formatResult(result);
+                histDisp.setText(control.getExpStart() + " " + num + "⁻¹");
+                disp.setText(result);
                 updateDispFont();
                 control.setStartNewNumber(false);
             }
@@ -551,10 +550,12 @@ public class Calculator extends Application {
 
             try {
 
-                result = log.calculateRecip(num);
-                formResult = log.formatResult(result);
-                histDisp.setText(num + "⁻¹ = " + formResult);
-                disp.setText(formResult);
+                result = control.handleReciprocal(txt);
+
+                //result = log.calculateRecip(num);
+                //formResult = log.formatResult(result);
+                histDisp.setText(num + "⁻¹ = " + result);
+                disp.setText(result);
                 updateDispFont();
                 control.setStartNewNumber(true);
             }

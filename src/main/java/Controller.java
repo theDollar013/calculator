@@ -107,4 +107,13 @@ public class Controller {
         result = log.calculateSquare(num);
         return log.formatResult(result);
     }
+
+    public String handleReciprocal(String currDisp) {
+
+        double num = Double.parseDouble(currDisp);
+        double result;
+
+        result = log.calculateRecip(num);
+        return log.formatResult(result);
+    }
 }
