@@ -606,9 +606,9 @@ public class Calculator extends Application {
     private void updateExpHist() {
         // Handles numbers in the calculation history box
 
-        if (log.hasOperation()) {
+        if (control.hasOperation()) {
 
-            histDisp.setText(expStart + " " + disp.getText());
+            histDisp.setText(control.getExpStart() + " " + disp.getText());
         }
     }
 

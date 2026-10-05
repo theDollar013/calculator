@@ -47,12 +47,13 @@ public class Controller {
     public String handleOperator(String currDisp, String op) {
 
         // If there is already a queued operation, calculate it first
-        if (hasOperation() && isStartNewNumber()) {
+        if (hasOperation() && !isStartNewNumber()) {
 
             double secondNumber = Double.parseDouble(currDisp);
             expStart = expStart + " " + currDisp + " " + op;
             double result = log.calcWith(secondNumber);
             String formResult = log.formatResult(result);
+            log.setOperation(result, op);
             return formResult;
         }
 
