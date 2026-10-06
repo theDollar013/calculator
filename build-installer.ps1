@@ -5,9 +5,27 @@ param(
 $ErrorActionPreference = "Stop"
 
 $AppName = "Calculator"
-$Version = "1.0"
-$MainJar = "javafx-calculator-$Version.jar"
+$Version = (mvn help:evaluate `
+    -Dexpression=project.version `
+    -q `
+    -DforceStdout).Trim()
 
+if ($LASTEXITCODE -ne 0 or [string]::IsNullOrWhiteSpace($Version)) {
+
+    throw "Could not determine project version from pom.xml."
+}
+
+$ArtifactId = (mvn help:evaluate `
+    -Dexpression=project.artifactId `
+    -q `
+    -DforceStdout).Trim()
+
+if ($LASTEXITCODE -ne 0 or [string]::IsNullOrWhiteSpace($ArtifactId)) {
+
+    throw "Could not determine artifact ID from pom.xml."
+}
+
+$MainJar = "$ArtifactId-$Version.jar"
 $Icon = "src\main\resources\icons\calculator.ico"
 $DependencyDir = "target\dependency"
 $PackageInput = "target\package-input"
@@ -16,6 +34,36 @@ $InstallerDir = "target\installer"
 $Repo = "theDollar013/calculator"
 $Tag = "v$Version"
 
+if ($Publish) {
+
+    Write-Host "=== Checking Git Status ==="
+
+    $GitStatus = git status --porcelain
+
+    if ($LASTEXITCODE -ne 0) {
+
+        throw "Could not determine Git repository status."
+    }
+
+    if ($GitStatus) {
+
+        Write-Host $GitStatus
+        throw "Uncommitted changes detected. Commit or discard changes before publishing."
+    }
+
+    Write-Host "Working tree is clean."
+
+    Write-Host "=== Checking GitHub Release Tag ==="
+
+    gh release view $Tag --repo $Repo *> $null
+
+    if ($LASTEXITCODE -eq 0) {
+
+        throw "GitHub release $Tag already exists. Update the version in pom.xml before publishing."
+    }
+}
+
+Write-Host "=== Calculator Release $Version ==="
 Write-Host "=== Building Calculator ==="
 
 mvn clean verify
