@@ -7,6 +7,14 @@
     <artifactId>javafx-calculator</artifactId>
     <version>1.0</version>
 
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/theDollar013/calculator</url>
+        </repository>
+    </distributionManagement>
+
     <properties>
         <maven.compiler.release>27</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

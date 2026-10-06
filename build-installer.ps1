@@ -1,3 +1,7 @@
+param(
+    [switch]$Publish
+}
+
 $ErrorActionPreference = "Stop"
 
 $AppName = "Calculator"
@@ -9,6 +13,8 @@ $DependencyDir = "target\dependency"
 $PackageInput = "target\package-input"
 $PackageDir = "target\package"
 $InstallerDir = "target\installer"
+$Repo = "theDollar013/calculator"
+$Tag = "v$Version"
 
 Write-Host "=== Building Calculator ==="
 
@@ -78,3 +84,28 @@ Write-Host ""
 Write-Host "=== BUILD COMPLETE ==="
 Write-Host "Installer is located in:"
 Write-Host "$InstallerDir"
+
+if ($Publish) {
+
+    Write-Host "=== Publishing GitHub Release ==="
+
+    $Installer = Get-ChildItem "$InstallerDir\*.exe" | Select-Object -First 1
+
+    if (-not $Installer) {
+
+        throw "Installer could not be found."
+    }
+
+    gh release create $Tag `
+        $Installer.FullName `
+        --repo $Repo `
+        --title "Calculator $Version" `
+        --generate-notes
+        
+    if ($LASTEXITCODE -ne 0) {
+
+        throw "GitHub release creation failed."
+    }
+
+    Write-Host "GitHub release published succesfully."
+}
