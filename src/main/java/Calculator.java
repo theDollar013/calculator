@@ -11,6 +11,7 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import java.util.HashMap;
 import java.util.Map;
@@ -57,6 +58,7 @@ public class Calculator extends Application {
         stage.setResizable(true);
         stage.setMinHeight(500);
         stage.setMinWidth(350);
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("/icons/calculator.png")));
         stage.show();
     }
 
