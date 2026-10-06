@@ -1,6 +1,6 @@
 param(
     [switch]$Publish
-}
+)
 
 $ErrorActionPreference = "Stop"
 
@@ -101,7 +101,7 @@ if ($Publish) {
         --repo $Repo `
         --title "Calculator $Version" `
         --generate-notes
-        
+
     if ($LASTEXITCODE -ne 0) {
 
         throw "GitHub release creation failed."
