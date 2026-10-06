@@ -118,6 +118,7 @@ public class Logic {
             return Long.toString((long) result);
         }
 
+        result = Math.round(result * 1e10) / 1e10;
         return Double.toString(result);
     }
 }
