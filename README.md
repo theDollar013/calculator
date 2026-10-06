@@ -8,9 +8,6 @@ The calculator handles basic mathematic functions (addition, subtraction, divisi
 The calculator includes a single line of history to show the previous operation that was calculated. It also includes
 	keyboard-input support for all number, basic operator, enter, backspace, and escape inputs.
 
-KNOWN BUGS:
-- calculations with decimals can sometimes be incorrect (23.35 + 3.55 shows a result of 26.9000000000002)
-
 Later builds will include support for:
 - multi-line calculation history
 - scientific notation
