@@ -3,14 +3,16 @@ A Java-built calculator utilizing a JavaFX GUI
 Developed by theDollar013
 
 The calculator handles basic mathematic functions (addition, subtraction, division, and multiplication)
-	as well as supporting percentages and square roots.
+	as well as supporting percentages and square roots. It uses immediate execution logic rather than 
+	recognizing order of operations. A separate scientific mode may be implemented at a later time that
+	calculates with order of operations in mind.
 	
 The calculator includes a single line of history to show the previous operation that was calculated. It also includes
 	keyboard-input support for all number, basic operator, enter, backspace, and escape inputs.
 
 Later builds will include support for:
 - multi-line calculation history
-- scientific notation
+- scientific mode
 	
 More features may be made available over time as they are thought of and implemented.
 
