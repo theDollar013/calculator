@@ -9,7 +9,7 @@ The calculator includes a single line of history to show the previous operation 
 	keyboard-input support for all number, basic operator, enter, backspace, and escape inputs.
 
 KNOWN BUGS:
-- calculations with decimals can sometimes be incorrect (23.35 + 3.55 shows a result of 28.9000000000002)
+- calculations with decimals can sometimes be incorrect (23.35 + 3.55 shows a result of 26.9000000000002)
 
 Later builds will include support for:
 - multi-line calculation history
