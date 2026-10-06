@@ -16,7 +16,7 @@ Current functionality includes:
 - Addition / Subtraction
 - Multiplication / Division
 - Decimal Input
-- + / - toggle
+- \+ / - toggle
 - Percentages
 - Square Root
 - Squaring / Exponents / Reciprocals
@@ -28,16 +28,16 @@ Current functionality includes:
 # Keyboard Controls
 
 The following keyboard inputs are currently supported:
-- 0-9 -- Number Entry
-- . -- Decimal
-- + -- Addition
-- - -- Subtraction
-- * -- Multiplication
-- / -- Division
-- Shift + 6 (^) -- Exponents
-- Enter -- Equals
+- 0-9 - Number Entry
+- . - Decimal
+- \+ - Addition
+- \- - Subtraction
+- \* - Multiplication
+- / - Division
+- Shift + 6 (^) - Exponents
+- Enter - Equals
 - Backspace
-- Escape -- Clear
+- Escape - Clear
 
 # Project Structure
 
